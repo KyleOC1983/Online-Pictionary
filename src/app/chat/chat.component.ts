@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText == this.answer) {
       let msg: Message = {
-        username: this.displayName,
+        display_name: this.displayName,
         body: this.messageText
       }
       this.chatService.sendChat(msg);
@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
     }
     else if(this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText != this.answer) {
       let msg: Message = {
-        username: this.displayName,
+        display_name: this.displayName,
         body: this.messageText
       }
       this.chatService.sendChat(msg);
@@ -41,6 +41,9 @@ export class ChatComponent implements OnInit {
         duration: 2000,
       });
     }
+    this._snackBar.open('Enter a valid answer', 'OK', {
+      duration: 2000,
+    });
   }
 
   chatScroll(): void {
