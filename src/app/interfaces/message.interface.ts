@@ -1,4 +1,4 @@
 export interface Message{
-    display_name: string,
+    displayName: string,
     body: string
 }

@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText == this.answer) {
       let msg: Message = {
-        display_name: this.displayName,
+        displayName: this.displayName,
         body: this.messageText
       }
       this.chatService.sendChat(msg);
@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
     }
     else if(this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText != this.answer) {
       let msg: Message = {
-        display_name: this.displayName,
+        displayName: this.displayName,
         body: this.messageText
       }
       this.chatService.sendChat(msg);
