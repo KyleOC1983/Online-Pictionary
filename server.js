@@ -11,4 +11,4 @@ app.get('*', (req, res)=>{
     res.sendFile('/dist/index.html', { root: __dirname + '/'});
 });
 
-app.listen(port);
+server.listen(port);

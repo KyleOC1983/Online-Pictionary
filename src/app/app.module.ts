@@ -30,8 +30,7 @@ import { FormsModule} from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    StoreModule.forRoot(reducers)
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(reducers),
     FormsModule
   ],
   providers: [],

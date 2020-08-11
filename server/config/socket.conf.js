@@ -1,6 +1,6 @@
 module.exports.listen = (server) => {
     const socketio = require('socket.io');
-    io = socketio.listen(server);
+    io = socketio(server);
     io.on('connect', (socket) => {
         console.log('user connected')
         socket.on('disconnect', () => {
