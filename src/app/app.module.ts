@@ -12,6 +12,7 @@ import { SketchpadComponent } from './sketchpad/sketchpad.component';
 import { GameComponent } from './game/game.component';
 import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from './materialModule';
+import { FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MaterialModule } from './materialModule';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
