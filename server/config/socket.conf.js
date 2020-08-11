@@ -1,9 +1,7 @@
-const socketio = require('socket.io');
-
-module.exports.listen = (app) => {
-    io = socketio.listen(app);
-
-    io.connect('connect', (socket) => {
+module.exports.listen = (server) => {
+    const socketio = require('socket.io');
+    io = socketio.listen(server);
+    io.on('connect', (socket) => {
         console.log('user connected')
         socket.on('disconnect', () => {
             console.log('user disconnected')
@@ -24,6 +22,5 @@ module.exports.listen = (app) => {
             io.emit('win', winInfo)
         })
     })
-
-    return io;
+    return io
 }
