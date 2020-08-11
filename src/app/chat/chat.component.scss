@@ -1,0 +1,24 @@
+
+.output-box{
+    width: calc(90% - 10px);
+    height: 300px;
+    margin: 10px auto;
+    border: 1px solid black;
+    overflow-y: scroll;
+    padding: 0px 5px;
+}
+
+.input-box{
+    width: 60%;
+    margin: 10px auto;
+    height: 80px;
+}
+
+.chat-input{
+    margin: auto;
+    text-align: center;
+}
+
+.username{
+    font-weight: bold;
+}
