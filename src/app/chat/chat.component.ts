@@ -51,9 +51,6 @@ export class ChatComponent implements OnInit {
     } catch (err) { }
   }
 
-
-
-
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
     this.chatService.chatMessage$.subscribe(msg => {
