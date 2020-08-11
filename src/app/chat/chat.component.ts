@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
 
 
   sendMessage() {
-    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText == this.answer) {
+    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
       let msg: Message = {
         displayName: this.displayName,
         body: this.messageText
@@ -27,23 +27,22 @@ export class ChatComponent implements OnInit {
       this.chatService.sendChat(msg);
       this.messageText = '';
       this._snackBar.open('That is correct!', 'OK', {
-        duration: 2000,
+        duration: 2000
       });
     }
-    else if(this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText != this.answer) {
+    else if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() != this.answer.toLowerCase()) {
       let msg: Message = {
         displayName: this.displayName,
         body: this.messageText
       }
       this.chatService.sendChat(msg);
       this.messageText = '';
-      this._snackBar.open('That is incorrect :(', 'OK', {
-        duration: 2000,
+    }
+    else if (this.messageText.length == 0) {
+      this._snackBar.open('Enter a valid answer', 'OK', {
+        duration: 2000
       });
     }
-    this._snackBar.open('Enter a valid answer', 'OK', {
-      duration: 2000,
-    });
   }
 
   chatScroll(): void {
@@ -56,6 +55,11 @@ export class ChatComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
+    this.chatService.chatMessage$.subscribe(msg => {
+      this.messages.push(msg)
+      setTimeout(this.chatScroll.bind(this), 50)
+    });
   }
 
 }
