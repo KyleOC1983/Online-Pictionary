@@ -3,7 +3,7 @@ import * as playerActions from '../actions/player.actions';
 
 export interface PlayerState {
     artist: string,
-    players: Array<String>,
+    players: Array<string>,
 };
 
 export const initialPlayerState: PlayerState = {

@@ -14,18 +14,22 @@ export const initalTopicState: TopicState = {
     topics: ["Apple", "Chair", "Mouse", "Moon", "Ant", "Computer", "Book", "Pig", "Eraser", "Vase"]
 };
 
-const reducer = createReducer(initalTopicState,
-    on(topicsActions.selectTopic, (state) =>{
+const _topicReducer = createReducer(initalTopicState,
+    on(topicsActions.selectTopic, (state) => {
         let topics = [...state.topics]
         let used = [...state.usedTopics]
-        if(state.currentTopic){
+        if (state.currentTopic) {
             used = [...used, state.currentTopic]
         }
-        if(topics.length === 0){
+        if (topics.length === 0) {
             topics = used
             used = []
         }
         const random = Math.floor(Math.random() * topics.length);
         let newTopic = topics.splice(random, 1)[0];
-        return{...state, currentTopic: newTopic, usedTopics: used, topics: topics}
-        }));
+        return { ...state, currentTopic: newTopic, usedTopics: used, topics: topics }
+    }));
+
+export function topicsReducer(state, action) {
+    return _topicReducer(state, action)
+}
