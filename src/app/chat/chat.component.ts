@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit {
       this.messageText = '';
     }
     else if (this.messageText.length == 0) {
-      this._snackBar.open('Enter a valid answer', 'OK', {
+      this._snackBar.open('Enter a valid message', 'OK', {
         duration: 2000
       });
     }
