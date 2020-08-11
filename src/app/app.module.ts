@@ -12,6 +12,7 @@ import { SketchpadComponent } from './sketchpad/sketchpad.component';
 import { GameComponent } from './game/game.component';
 import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from './materialModule';
+import { reducers } from './store';
 import { FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { FormsModule} from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    StoreModule.forRoot(reducers)
     StoreModule.forRoot({}, {}),
     FormsModule
   ],
