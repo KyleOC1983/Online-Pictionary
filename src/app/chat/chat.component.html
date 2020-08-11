@@ -1,1 +1,16 @@
-<p>chat works!</p>
+<div #output class='output-box'>
+  <div *ngFor = "let m of messages">
+    <span class="username"> {{m.username}} -</span> {{m.body}}
+  </div>
+</div>
+
+<div class="chat-input">
+<mat-form-field class="input-box">
+    <mat-label>Message</mat-label>
+    <textarea [(ngModel)]="messageText" matInput placeholder="Enter a new message..."></textarea>
+  </mat-form-field>
+
+  <button mat-icon-button color="primary" aria-label="Send Message" (click)="sendMessage()">
+    <mat-icon>send</mat-icon>
+  </button>
+</div>
