@@ -60,13 +60,6 @@ export class ChatComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1))
         .subscribe(() => this.autosize.resizeToFitContent(true));
   }
-
-  myApp.controller('myCtrl', ['$scope', function($scope) {
-    $scope.textareaAction = function() {
-    	console.log($scope.textareaModel);
-    };
-}]);
-
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
     this.chatService.chatMessage$.subscribe(msg => {
