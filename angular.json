@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "pictionary-C4"
+  "defaultProject": "pictionary-C4",
+  "cli": {
+    "analytics": "ab66ea6d-4e08-4b95-92ba-a868875ce408"
+  }
 }

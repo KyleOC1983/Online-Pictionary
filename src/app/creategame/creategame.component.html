@@ -1,0 +1,30 @@
+<div class="parent topMargin">
+    <div class="container">
+<h4>Select Maximum Score</h4>
+<mat-form-field appearance="fill">
+  <mat-label>Max Score</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let score of scores" [value]="score.value">
+      {{score.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<h4>Select Number of Rounds</h4>
+<mat-form-field appearance="fill">
+  <mat-label>Rounds</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let round of rounds" [value]="round.value">
+      {{round.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+</div>
+
+<div class="parent">
+    <div class="container">
+<button class="shrink" mat-raised-button color="primary">Create New Game</button>
+    </div>
+</div>
