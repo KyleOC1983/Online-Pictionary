@@ -1,0 +1,14 @@
+.app-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.chat-box {
+    flex-basis: 30%;
+}
+
+.draw-box {
+    flex-basis: 30%;
+}
