@@ -1,5 +1,4 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { stat } from 'fs';
 import * as topicsActions from '../actions/topics.actions'
 
 export interface TopicState {
