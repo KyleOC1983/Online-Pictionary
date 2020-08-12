@@ -13,7 +13,8 @@
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
               cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="10"></textarea>
+              cdkAutosizeMaxRows="10"
+              (keyup.enter)="sendMessage()"></textarea>
   </mat-form-field>
 
   <button mat-icon-button color="primary" aria-label="Send Message" (click)="sendMessage()">
