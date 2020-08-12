@@ -5,9 +5,17 @@
 </div>
 
 <div class="chat-input">
-<mat-form-field class="input-box">
+  <mat-form-field>
     <mat-label>Message</mat-label>
-    <textarea [(ngModel)]="messageText" matInput placeholder="Enter a new message..."></textarea>
+    <textarea matInput
+              [(ngModel)]="messageText"
+              placeholder="Enter a new message..."
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="10"
+              ng-model="textareaModel"
+              ng-textarea-enter="sendMessage()"></textarea>
   </mat-form-field>
 
   <button mat-icon-button color="primary" aria-label="Send Message" (click)="sendMessage()">
