@@ -1,7 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Message } from '../interfaces/message.interface'
 import { ChatService } from '../services/chat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +17,7 @@ export class ChatComponent implements OnInit {
   displayName: string = '';
   answer = "generic answer";
 
-  constructor(private chatService: ChatService, private _snackBar: MatSnackBar) { }
+  constructor(private chatService: ChatService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
 
 
   sendMessage() {
@@ -50,6 +52,20 @@ export class ChatComponent implements OnInit {
       this.chatOutput.nativeElement.scrollTo(0, this.messages.length * 20);
     } catch (err) { }
   }
+
+
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
+
+  myApp.controller('myCtrl', ['$scope', function($scope) {
+    $scope.textareaAction = function() {
+    	console.log($scope.textareaModel);
+    };
+}]);
 
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
