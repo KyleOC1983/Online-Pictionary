@@ -15,7 +15,7 @@ export class ChatService {
    
 public get chatMessage$(){
   return Observable.create((observer) => {
-    this.socket.on('new-message', (message) => {
+    this.socket.on('newMessage', (message) => {
         observer.next(message);
     });
 });
@@ -23,6 +23,6 @@ public get chatMessage$(){
 
 
    sendChat(msg: Message){
-     this.socket.emit('new-message', msg);
+     this.socket.emit('newMessage', msg);
    }
 }
