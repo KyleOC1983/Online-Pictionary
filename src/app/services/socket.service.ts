@@ -25,6 +25,20 @@ export class SocketService {
 
   sendSketch(draw) {
     this.socket.emit('draw', draw);
+    console.log(draw);
+  }
+
+  public get canDraw$() {
+    return Observable.create((observer) => {
+      this.socket.on('canDraw', (canDraw) => {
+        observer.next(canDraw);
+      });
+    });
+  }
+
+  canDraw(canDraw){
+    this.socket.emit('canDraw', canDraw);
+    console.log(canDraw);
   }
   
   //  Chat observable and functionality
@@ -46,9 +60,13 @@ export class SocketService {
   // Game functionality
 
     // Join game function
-    joinGame(gameId){}
+    joinGame(gameId: string){
+      this.socket.emit('joinGame', gameId);
+    }
     // Leave game function
-    leaveGame(){}
+    leaveGame(){
+      this.socket.emit('leaveGame')
+    }
     // Win point function
 
     // New round function(s)

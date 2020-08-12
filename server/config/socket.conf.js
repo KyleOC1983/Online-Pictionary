@@ -6,13 +6,14 @@ module.exports.listen = (server) => {
         socket.on('disconnect', () => {
             console.log('user disconnected');
         })
-        socket.on('gameJoin', (gameId) => {
+        socket.on('joinGame', (gameId) => {
             socket.gameRoom = gameId;
             socket.join(gameId, ()=>{
-                socket.to(socket.gameRoom).emit('getState');
+                // socket.to(socket.gameRoom).emit('getState');
             });
+            console.log('joined game ' + socket.gameRoom)
         })
-        socket.on('gameLeave', () => {
+        socket.on('leaveGame', () => {
             socket.gameRoom = null;
             socket.rooms = {};
         })
@@ -20,7 +21,12 @@ module.exports.listen = (server) => {
             io.to(socket.gameRoom).emit('newMessage', msg);
         })
         socket.on('draw', (draw) => {
+            console.log('hitting draw');
+            console.log(socket.gameRoom);
             io.to(socket.gameRoom).emit('draw', draw);
+        })
+        socket.on('canDraw', (canDraw)=>{
+            io.to(socket.gameRoom).emit('canDraw', canDraw);
         })
         socket.on('newTopic', (topic) => {
             io.to(socket.gameRoom).emit('newTopic', topic);

@@ -25,17 +25,20 @@ export class SketchpadComponent implements OnInit {
     this.myPath.strokeColor = 'black';
     this.myPath.strokeWidth = 3;
     this.canDraw = true;
+    this.socket.canDraw({draw: true});
   }
 
   draw(event){
     if(this.myDraw && this.canDraw){
     this.myPath.add(new Point(event.layerX, event.layerY));
-    this.socket.sendSketch(new Point(event.layerX, event.layerY));
+    this.socket.sendSketch({x: event.layerX, y: event.layerY});
+    console.log(new Point(event.layerX, event.layerY));
     }
   }
 
   endDraw(){
     this.canDraw = false;
+    this.socket.canDraw({draw: false});
   }
 
   newArtist(){
@@ -51,10 +54,17 @@ export class SketchpadComponent implements OnInit {
     window['paper'] = paper;
     this.project1 = new Project('cv');
     this.myPath = new Path;
+    this.artistPath = new Path;
+    this.socket.canDraw$.subscribe(canDraw =>{
+      if(canDraw){
+        this.artistPath = new Path();
+      }
+    })
     this.socket.newSketch$.subscribe(point =>{
       this.artistPath.strokeColor = 'black';
       this.artistPath.strokeWidth = 3;
-      this.artistPath.add(point);
+      this.artistPath.add(point.x, point.y);
+      console.log(point);
     })
   }
 
