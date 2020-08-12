@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Message } from '../interfaces/message.interface'
-import { ChatService } from '../services/chat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SocketService } from '../services/socket.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit {
   answer = "generic answer";
   
 
-  constructor(private chatService: ChatService, private _snackBar: MatSnackBar) {  }
+  constructor(private socketService: SocketService, private _snackBar: MatSnackBar) {  }
 
 
   sendMessage() {
@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit {
         displayName: this.displayName,
         body: this.messageText
       }
-      this.chatService.sendChat(msg);
+      this.socketService.sendChat(msg);
       this.messageText = '';
 
       this._snackBar.open('That is correct!', 'OK', {
@@ -38,7 +38,7 @@ export class ChatComponent implements OnInit {
         displayName: this.displayName,
         body: this.messageText
       }
-      this.chatService.sendChat(msg);
+      this.socketService.sendChat(msg);
       this.messageText = '';
     }
     else if (this.messageText.length == 0) {
@@ -56,7 +56,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
-    this.chatService.chatMessage$.subscribe(msg => {
+    this.socketService.chatMessage$.subscribe(msg => {
       this.messages.push(msg)
       setTimeout(this.chatScroll.bind(this), 50)
     });
