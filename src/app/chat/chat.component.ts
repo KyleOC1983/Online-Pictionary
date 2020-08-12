@@ -3,6 +3,7 @@ import { Message } from '../interfaces/message.interface'
 import { ChatService } from '../services/chat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -14,8 +15,9 @@ export class ChatComponent implements OnInit {
   messageText: string = '';
   displayName: string = '';
   answer = "generic answer";
+  
 
-  constructor(private chatService: ChatService, private _snackBar: MatSnackBar) { }
+  constructor(private chatService: ChatService, private _snackBar: MatSnackBar) {  }
 
 
   sendMessage() {
@@ -26,6 +28,7 @@ export class ChatComponent implements OnInit {
       }
       this.chatService.sendChat(msg);
       this.messageText = '';
+
       this._snackBar.open('That is correct!', 'OK', {
         duration: 2000
       });
