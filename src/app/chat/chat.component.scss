@@ -2,8 +2,8 @@
     width: calc(90% - 10px);
     height: 300px;
     margin: 10px auto;
-    border: 1px solid #ed2162;
-    background-color: #e6e6e6;
+    border: 2px solid #353535;
+    background-color: #4b4b4b;
     overflow-y: scroll;
     padding: 0px 5px;
     border-radius: 10px;
@@ -22,4 +22,8 @@
 
 .username{
     font-weight: bold;
+}
+
+span {
+    margin-top: 5px;
 }
