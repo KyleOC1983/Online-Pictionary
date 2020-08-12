@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project, Path, Point } from 'paper'; 
 import * as paper from 'paper';
+import { SocketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-sketchpad',
@@ -15,7 +16,7 @@ export class SketchpadComponent implements OnInit {
   canDraw: boolean;
 
 
-  constructor() { }
+  constructor(private socket: SocketService) { }
 
   startDraw(){
     this.myPath = new Path();
@@ -26,7 +27,7 @@ export class SketchpadComponent implements OnInit {
 
   draw(event){
     if(this.canDraw){
-    this.myPath.add(new Point(event.layerX, event.layerY))
+    this.myPath.add(new Point(event.layerX, event.layerY));
     }
   }
 
