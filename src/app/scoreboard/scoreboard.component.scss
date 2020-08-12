@@ -25,3 +25,14 @@ h2 {
     text-decoration: underline;
     text-align: center;
 }
+
+button{
+    float:right;
+    margin-right: 5px;
+    margin-top: 5px;
+    background-color: red;
+}
+
+.buttonDiv{
+    width: calc(100% - 10px);
+}
