@@ -7,7 +7,7 @@
 <div class="chat-input">
 <mat-form-field class="input-box">
     <mat-label>Message</mat-label>
-    <textarea [(ngModel)]="messageText" matInput placeholder="Enter a new message..."></textarea>
+    <textarea [(ngModel)]="messageText" (keyup.enter)="sendMessage()" matInput placeholder="Enter a new message..."></textarea>
   </mat-form-field>
 
   <button mat-icon-button color="primary" aria-label="Send Message" (click)="sendMessage()">
