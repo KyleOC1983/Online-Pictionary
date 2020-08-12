@@ -1,1 +1,31 @@
-<p>home works!</p>
+<mat-toolbar color="basic">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon></mat-icon>
+    </button>
+    <span>Home</span>
+    <span style="flex: 1 1 auto;"></span>
+    <button mat-raised-button color="primary">Login</button>
+    <button mat-button color="primary">Create Account</button>
+   
+  </mat-toolbar>
+
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <button class="largeButton" mat-raised-button color="primary">Create Game</button>
+    </mat-grid-tile>
+    
+    <mat-grid-tile>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">                
+              <mat-label>Enter Game URL</mat-label>
+              <input matInput>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Join Game</button>
+        </form>
+    </mat-grid-tile>
+    
+  </mat-grid-list>
+
+
+
+
