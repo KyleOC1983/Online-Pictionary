@@ -1,0 +1,27 @@
+.scoreboard {
+    width: calc(90% - 10px);
+    margin: 10px auto;
+    height: 440px;
+    border: 2px solid #353535;
+    background-color: #4b4b4b;
+    border-radius: 10px;
+    padding: 0px 5px;
+    
+}
+
+.win-box {
+    width: calc(90% - 10px);
+    margin: 10px auto;
+    height: 50px;
+    border: 2px solid #353535;
+    background-color: #4b4b4b;
+    border-radius: 10px;
+    padding: 0px 5px;
+    
+}
+
+h2 {
+    margin-top: 5px;
+    text-decoration: underline;
+    text-align: center;
+}
