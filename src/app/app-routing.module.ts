@@ -7,7 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 
 
 const routes: Routes = [
-  {path: 'game', component: GameComponent},
+  {path: 'game/:gameId', component: GameComponent},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
