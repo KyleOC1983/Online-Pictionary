@@ -1,13 +1,20 @@
 <div #output class='output-box'>
   <div *ngFor = "let m of messages">
-    <span class="username"> {{m.username}} -</span> {{m.body}}
+    <span class="displayName"> {{m.displayName}} -</span> {{m.body}}
   </div>
 </div>
 
 <div class="chat-input">
-<mat-form-field class="input-box">
+  <mat-form-field class="input-box">
     <mat-label>Message</mat-label>
-    <textarea [(ngModel)]="messageText" (keyup.enter)="sendMessage()" matInput placeholder="Enter a new message..."></textarea>
+    <textarea matInput
+              [(ngModel)]="messageText"
+              placeholder="Enter a new message..."
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="3"
+              (keyup.enter)="sendMessage()"></textarea>
   </mat-form-field>
 
   <button mat-icon-button color="primary" aria-label="Send Message" (click)="sendMessage()">

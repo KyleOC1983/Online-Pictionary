@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Message } from '../interfaces/message.interface'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import {take} from 'rxjs/operators';
 import { SocketService } from '../services/socket.service';
-
 
 @Component({
   selector: 'app-chat',
@@ -16,9 +17,7 @@ export class ChatComponent implements OnInit {
   displayName: string = '';
   answer = "generic answer";
   
-
-  constructor(private socketService: SocketService, private _snackBar: MatSnackBar) {  }
-
+  constructor(private socketService: socketService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
@@ -54,6 +53,13 @@ export class ChatComponent implements OnInit {
     } catch (err) { }
   }
 
+
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
     this.socketService.chatMessage$.subscribe(msg => {
