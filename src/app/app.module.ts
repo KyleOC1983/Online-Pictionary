@@ -14,7 +14,9 @@ import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from './materialModule';
 import { reducers } from './store';
 import { FormsModule} from '@angular/forms';
+import { CreategameComponent } from './creategame/creategame.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ScoreboardComponent } from './scoreboard/scoreboard.component';
     ChatComponent,
     SketchpadComponent,
     GameComponent,
+    CreategameComponent,
     ScoreboardComponent
+
   ],
   imports: [
     BrowserModule,

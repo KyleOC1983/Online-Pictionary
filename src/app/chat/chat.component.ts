@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Message } from '../interfaces/message.interface'
-import { ChatService } from '../services/chat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {take} from 'rxjs/operators';
+import { SocketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -16,9 +16,8 @@ export class ChatComponent implements OnInit {
   messageText: string = '';
   displayName: string = '';
   answer = "generic answer";
-
-  constructor(private chatService: ChatService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
-
+  
+  constructor(private socketService: socketService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
@@ -26,8 +25,9 @@ export class ChatComponent implements OnInit {
         displayName: this.displayName,
         body: this.messageText
       }
-      this.chatService.sendChat(msg);
+      this.socketService.sendChat(msg);
       this.messageText = '';
+
       this._snackBar.open('That is correct!', 'OK', {
         duration: 2000
       });
@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit {
         displayName: this.displayName,
         body: this.messageText
       }
-      this.chatService.sendChat(msg);
+      this.socketService.sendChat(msg);
       this.messageText = '';
     }
     else if (this.messageText.length == 0) {
@@ -62,7 +62,7 @@ export class ChatComponent implements OnInit {
   }
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
-    this.chatService.chatMessage$.subscribe(msg => {
+    this.socketService.chatMessage$.subscribe(msg => {
       this.messages.push(msg)
       setTimeout(this.chatScroll.bind(this), 50)
     });
