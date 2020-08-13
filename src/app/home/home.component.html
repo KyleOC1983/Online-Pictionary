@@ -1,18 +1,17 @@
-<div class="topMargin">
-<mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile>
-    <button [routerLink]="['/creategame']" class="largeButton" mat-raised-button color="primary">Create Game</button>
-  </mat-grid-tile>
 
-  <mat-grid-tile>
+<h1 class="txt-center container">Home</h1>
+
+<div class="container">
+  <div class="content">
     <form class="example-form">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="w-100">
         <mat-label>Enter Game URL</mat-label>
         <input matInput>
       </mat-form-field>
-      <button mat-raised-button color="primary">Join Game</button>
+      <button mat-raised-button class="w-100" color="primary">Join Game</button>
     </form>
-  </mat-grid-tile>
 
-</mat-grid-list>
+    <p class="txt-center">Don't want to join existing games?</p>
+  <button [routerLink]="['/creategame']" class="largeButton w-100" mat-raised-button color="primary">Create Game</button>
+</div>
 </div>
