@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit {
   displayName: string = '';
   answer = "generic answer";
   
-  constructor(private socketService: socketService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
+  constructor(private socketService: SocketService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
