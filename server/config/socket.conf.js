@@ -6,6 +6,9 @@ module.exports.listen = (server) => {
         socket.on('disconnect', () => {
             console.log('user disconnected');
         })
+        socket.on('displayName', (displayName) => {
+            socket.displayName = displayName;
+        })
         socket.on('joinGame', (gameId) => {
             socket.gameRoom = gameId;
             socket.join(gameId, ()=>{
@@ -31,11 +34,12 @@ module.exports.listen = (server) => {
         socket.on('newTopic', (topic) => {
             io.to(socket.gameRoom).emit('newTopic', topic);
         })
-        socket.on('newRound', (roundInfo) => {
-            io.to(socket.gameRoom).emit('newRound', roundInfo);
-        })
-        socket.on('win', (winInfo) => {
-            io.to(socket.gameRoom).emit('win', winInfo);
+        // socket.on('newRound', (roundInfo) => {
+        //     io.to(socket.gameRoom).emit('newRound', roundInfo);
+        // })
+        socket.on('win', () => {
+            io.to(socket.gameRoom).emit('win', socket.displayName);
+            io.to(socket.gameRoom).emit('newRound');
         })
         socket.on('gameEnd', (gameEnd) => {
             io.to(socket.gameRoom).emit('gameEnd', gameEnd);
