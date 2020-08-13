@@ -22,11 +22,14 @@ newGameId(){
     })
     gameId.then((value)=> {
       gameConfig = {...gameConfig, gameId: value}
+      console.log(gameConfig, host);
+      // TODO Save gameConfig to FireStore
     })
-    // TODO Save gameConfig to FireStore
 
     // TODO Save host:Player to FireStore
     this.router.navigate([`/game/${this.gameId}`])
+    console.log(gameConfig);
+    
   }
   // Join game function
   joinGame(gameId){
