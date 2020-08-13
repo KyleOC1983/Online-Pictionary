@@ -1,36 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
+import { AngularFirestore } from "@angular/fire/firestore"
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   gameId: string
-  constructor(private router: Router) { }
+  constructor(private router: Router, private FS: AngularFirestore ) { }
 
 
 // Game functionality
-newGameId(){
-  this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
-  return this.gameId
-}
+
   // Create game
   createGame(gameConfig, host: Player){
-    const gameId = new Promise ((resolve, reject) => { 
-      resolve (this.newGameId())
-    })
-    gameId.then((value)=> {
-      gameConfig = {...gameConfig, gameId: value}
+    this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
       console.log(gameConfig, host);
+      this.FS.collection('pictionary').add({
+        createdTime: new Date(),
+        currentArtist: host,
+        currentTopic: null,
+        gameId: this.gameId,
+        validGameUntilTime: new Date(),
+        gameConfig,
+        users: [host]
+      }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
       // TODO Save gameConfig to FireStore
-    })
-
-    // TODO Save host:Player to FireStore
-    this.router.navigate([`/game/${this.gameId}`])
-    console.log(gameConfig);
-    
-  }
+    }
   // Join game function
   joinGame(gameId){
   }
@@ -38,6 +35,14 @@ newGameId(){
   leaveGame(){
     this.router.navigate(["/home"])
   }
+
+  // Assign Artist
+    // Add current artist to end of Users array
+    // Grab [0] of current user array in FS
+    // Save to currentArtist
+    // Remove that user from user array
+
+  
   // Win point function
     // Close topic
     // Assign point to correct player , update state
