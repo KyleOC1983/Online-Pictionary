@@ -22,3 +22,20 @@
 h2 {
     line-height: 50px;
 }
+
+.smallButton{
+    width: 80px;
+    height: 40px;   
+}
+
+.topMargin{
+    margin-top: 200px;
+}
+
+.parent{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+}
