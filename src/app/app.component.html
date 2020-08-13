@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
-  <span>Pictionary C4</span>
+  <button mat-button routerLink="home">
+    <img src="../assets/imgs/paint-board-and-brush.png" alt="Paint&Brush">
+    <h1>Pictionary C4</h1>
+  </button>
   <span style="flex: 1 1 auto;"></span>
   <button mat-button (click)="login()" *ngIf="!(user | async)?.uid">Login</button>
   <button mat-button (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
