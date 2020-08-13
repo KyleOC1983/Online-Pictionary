@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   // {path: 'login', component: LoginComponent},
    {path: 'creategame', component: CreategameComponent, canActivate: [AngularFireAuthGuard]},
-  {path: '**', redirectTo: '/game', canActivate: [AngularFireAuthGuard]}
+  {path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({
