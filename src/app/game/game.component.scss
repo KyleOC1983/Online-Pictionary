@@ -1,18 +1,41 @@
-.app-container {
+.container {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin: 10px auto;
 }
 
-.chat-box {
+.fb-20 {
     flex-basis: 20%;
 }
 
-.draw-box {
-    flex-basis: 20%;
+.stats-box {
+    width: calc(42% - 10px);
+    height: 50px;
+    margin-top: 10px;
+    border: 2px solid #353535;
+    background-color: #4b4b4b;
+    padding: 0px 5px;
+    border-radius: 10px;
+    justify-content: space-around !important;
 }
 
-.score-box {   
-    flex-basis: 20%;
+h2 {
+    line-height: 50px;
+}
+
+.smallButton{
+    width: 80px;
+    height: 40px;   
+}
+
+.topMargin{
+    margin-top: 200px;
+}
+
+.parent{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
 }

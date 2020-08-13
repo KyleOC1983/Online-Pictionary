@@ -4,12 +4,9 @@
   <button mat-icon-button>
     <mat-icon>account_circle</mat-icon>
   </button>
-  <button mat-icon-button>
-    <mat-icon>login</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>logout</mat-icon>
-  </button>
+  <button (click)="login()" *ngIf="!(user | async)?.uid">Login</button>
+  <button (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
 </mat-toolbar>
+
 
 <router-outlet></router-outlet>
