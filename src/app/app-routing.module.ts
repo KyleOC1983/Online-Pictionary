@@ -8,7 +8,7 @@ import { AngularFireAuthGuard} from '@angular/fire/auth-guard';
 
 const routes: Routes = [
   {path: 'game/:gameId', component: GameComponent},
-  {path: 'home', component: HomeComponent, canActivate: [AngularFireAuthGuard]},
+  {path: 'home', component: HomeComponent},
   // {path: 'login', component: LoginComponent},
    {path: 'creategame', component: CreategameComponent, canActivate: [AngularFireAuthGuard]},
   {path: '**', redirectTo: '/game', canActivate: [AngularFireAuthGuard]}
