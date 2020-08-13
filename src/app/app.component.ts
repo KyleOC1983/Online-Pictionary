@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from './services/authentication.service'
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'pictionary-C4';
-}
+  user;
+
+    constructor(private auth: AuthenticationService) {
+      this.user = auth.authInfo;
+    }
+  // 
+    login() {
+      this.auth.login();
+    }
+  // 
+    logout() {
+      this.auth.logout();
+    }
+  // 
+  }
