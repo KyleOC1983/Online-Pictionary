@@ -1,5 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import * as topicsActions from '../actions/topics.actions'
+import topicsArray from "../../shared/topics.arrays"
 
 export interface TopicState {
     currentTopic: string,
@@ -10,7 +11,7 @@ export interface TopicState {
 export const initalTopicState: TopicState = {
     currentTopic: null,
     usedTopics: [],
-    topics: ["Apple", "Chair", "Mouse", "Moon", "Ant", "Computer", "Book", "Pig", "Eraser", "Vase"]
+    topics: topicsArray
 };
 
 const _topicReducer = createReducer(initalTopicState,
