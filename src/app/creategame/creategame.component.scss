@@ -1,0 +1,19 @@
+.parent{
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.container{
+    width: 100%;
+}
+
+.shrink{
+    width: 200px;
+}
+
+.topMargin{
+    margin-top: 50px;
+}
+
