@@ -13,7 +13,7 @@ import { GameComponent } from './game/game.component';
 import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from './materialModule';
 import { reducers } from './store';
-import { FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CreategameComponent } from './creategame/creategame.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 
@@ -37,7 +37,8 @@ import { ScoreboardComponent } from './scoreboard/scoreboard.component';
     BrowserAnimationsModule,
     MaterialModule,
     StoreModule.forRoot(reducers),
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

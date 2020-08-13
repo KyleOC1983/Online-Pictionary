@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Player } from '../interfaces/player.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,19 @@ export class GameService {
 // Game functionality
 newGameId(){
   this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
-  console.log(this.gameId);
+  return this.gameId
 }
   // Create game
-  createGame(){
-    this.newGameId()
+  createGame(gameConfig, host: Player){
+    const gameId = new Promise ((resolve, reject) => { 
+      resolve (this.newGameId())
+    })
+    gameId.then((value)=> {
+      gameConfig = {...gameConfig, gameId: value}
+    })
+    // TODO Save gameConfig to FireStore
+
+    // TODO Save host:Player to FireStore
     this.router.navigate([`/game/${this.gameId}`])
   }
   // Join game function

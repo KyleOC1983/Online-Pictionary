@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../services/game.service';
+import { Player } from "../interfaces/player.interface"
 
 
 @Component({
@@ -20,20 +22,20 @@ export class CreategameComponent implements OnInit {
     {value: 10, viewValue: '10'},
   ];
 
-  scores: any[] = [
-    {value: 10, viewValue: '10'},
-    {value: 20, viewValue: '20'},
-    {value: 30, viewValue: '30'},
-    {value: 40, viewValue: '40'},
-    {value: 50, viewValue: '50'},
-    {value: 60, viewValue: '60'},
-    {value: 70, viewValue: '70'},
-    {value: 80, viewValue: '80'},
-    {value: 90, viewValue: '90'},
-  ];
+  gameSettings: Object = {}
+  creatorName: string;
+  scoreConfig: number;
+  roundConfig: number;
+  host: Player;
+  constructor(private gameService: GameService) { }
 
-  constructor() { }
 
+  createGame(){
+    this.gameSettings = {creatorName: this.creatorName, maxRounds: this.roundConfig, maxScore: this.scoreConfig }
+    this.host = {displayName: this.creatorName, score: 0, isArtist: true, isHost: true}
+
+    this.gameService.createGame(this.gameSettings, this.host)
+  }
   ngOnInit(): void {  }
 
 }

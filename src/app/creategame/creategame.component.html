@@ -1,30 +1,43 @@
 <div class="parent topMargin">
-    <div class="container">
-<h4>Select Maximum Score</h4>
-<mat-form-field appearance="fill">
-  <mat-label>Max Score</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let score of scores" [value]="score.value">
-      {{score.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+  <div class="container">
+    <h4>Set Display Name</h4>
+    <mat-form-field appearance="fill">
 
+      <input matInput type='text' placeholder="Enter a display name" [(ngModel)]='creatorName'>
+    </mat-form-field>
 
-<h4>Select Number of Rounds</h4>
-<mat-form-field appearance="fill">
-  <mat-label>Rounds</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let round of rounds" [value]="round.value">
-      {{round.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-</div>
+    <!-- <h4>Select Maximum Score</h4>
+    <mat-form-field appearance="fill">
+      <mat-label>Max Score</mat-label>
+      <mat-select [(ngModel)]='scoreConfig'>
+        <mat-option *ngFor="let score of scores" [value]="score.value">
+          {{score.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <br>
+    <h4>Select Maximum Score</h4>
+
+      <mat-label>Max Score</mat-label>
+      <mat-slider thumbLabel tickInterval="1" min='1' max='90' [(ngModel)]='scoreConfig' id='scoreSlider'></mat-slider>
+      <input matInput appearance="fill" type="number" [(ngModel)]='scoreConfig'>
+
+    <h4>Select Number of Rounds</h4>
+    <mat-form-field appearance="fill">
+      <mat-label>Rounds</mat-label>
+      <mat-select [(ngModel)]='roundConfig'>
+        <mat-option *ngFor="let round of rounds" [value]="round.value">
+          {{round.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+<mat-slider thumbLabel tickInterval="1" min='1' max='10' [(value)]='roundConfig'></mat-slider>
+  </div>
 </div>
 
 <div class="parent">
-    <div class="container">
-<button class="shrink" mat-raised-button color="primary">Create New Game</button>
-    </div>
+  <div class="container">
+    <button class="shrink" mat-raised-button color="primary" (click)='createGame()'>Create New Game</button>
+  </div>
 </div>
