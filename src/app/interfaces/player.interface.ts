@@ -1,6 +1,6 @@
 export interface Player{
     displayName: string,
     score: number,
-    isArtist?: boolean,
+    isArtist: boolean,
     isHost: boolean,
   }

@@ -10,7 +10,7 @@ import { GameComponent } from './game/game.component';
 import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from './materialModule';
 import { reducers } from './store';
-import { FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CreategameComponent } from './creategame/creategame.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { environment } from '../environments/environment'
@@ -38,12 +38,12 @@ import { AppComponent } from './app.component';
     MaterialModule,
     StoreModule.forRoot(reducers),
     FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule
   ],
   providers: [
     AuthenticationService,
-    
   ],
   bootstrap: [AppComponent]
 })
