@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
   <span>Pictionary C4</span>
   <span style="flex: 1 1 auto;"></span>
-  <button mat-icon-button>
+  <button mat-button (click)="login()" *ngIf="!(user | async)?.uid">Login</button>
+  <button mat-button (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
+  <button mat-icon-button *ngIf="(user | async)?.uid">
     <mat-icon>account_circle</mat-icon>
   </button>
-  <button (click)="login()" *ngIf="!(user | async)?.uid">Login</button>
-  <button (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
 </mat-toolbar>
 
 
