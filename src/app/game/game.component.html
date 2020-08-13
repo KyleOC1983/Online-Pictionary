@@ -1,5 +1,23 @@
-<div class="app-container">
+<div *ngIf="!savedName" class="parent topMargin">
+    <p>Please enter a Display Name</p>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            
+          <mat-label></mat-label>
+          <input matInput [(ngModel)]="displayName" name="displayName">
+        </mat-form-field>
+      </form>
+    
+    
+      <button mat-raised-button color="primary" class="smallButton" (click)="saveDisplayName()">Submit</button>
+    </div>
+
+
+
+<div *ngIf= "savedName" class="app-container">
     <app-chat class="chat-box"></app-chat>
     <app-sketchpad class="draw-box"></app-sketchpad>
     <app-scoreboard class="score-box"></app-scoreboard>
     </div>
+
+    

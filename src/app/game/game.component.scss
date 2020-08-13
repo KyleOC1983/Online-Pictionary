@@ -16,3 +16,20 @@
 .score-box {   
     flex-basis: 20%;
 }
+
+.parent{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+}
+
+.smallButton{
+    width: 80px;
+    height: 40px;   
+}
+
+.topMargin{
+    margin-top: 200px;
+}
