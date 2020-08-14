@@ -13,7 +13,7 @@ export class GameComponent implements OnInit, OnDestroy{
 
   displayName: string = '';
   savedName: boolean = false;
-  currentGame: string = this.actvr.snapshot.params.gameId;
+  currentGame: string = '';
 
   constructor(private socket: SocketService, private actvr: ActivatedRoute, private gameService: GameService) { }
 
@@ -29,6 +29,7 @@ export class GameComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.socket.joinGame(this.actvr.snapshot.params.gameId);
+    this.currentGame = this.actvr.snapshot.params.gameId;
   }
 
   ngOnDestroy(): void{

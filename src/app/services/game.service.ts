@@ -27,7 +27,7 @@ export class GameService {
       this.FS.collection('pictionary').add({
         createdTime: new Date(),
         currentArtist: host,
-        currentTopic: null,
+        currentTopic: this.randomTopic,
         gameId: this.gameId,
         validGameUntilTime: new Date(),
         gameConfig,
