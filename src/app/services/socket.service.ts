@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Message } from '../interfaces/message.interface';
-import { PlayerState, TopicState } from '../store/reducers';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ export class SocketService {
 
   socket: any;
 
-  constructor(private playerState: PlayerState, private topicState: TopicState) {
+  constructor() {
     this.socket = io.connect();
   }
   

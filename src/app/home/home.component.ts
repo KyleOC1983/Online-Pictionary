@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   roomCode: string
-  constructor(private gameService: GameService) { }
 
   joinGame(){
     this.gameService.joinGame(this.roomCode)
@@ -19,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   displayName: string = '';  
 
-  constructor(private auth: AngularFireAuth, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private auth: AngularFireAuth, private _snackBar: MatSnackBar, private router: Router, private gameService: GameService) { }
 
   
 
