@@ -47,7 +47,11 @@ export class SketchpadComponent implements OnInit {
   }
 
   clearDrawing(){
-    this.project1.clear();
+    this.socket.clearBoard(true);
+  }
+
+  clearBoard(clear){
+    if(clear)this.project1.clear();
   }
 
   ngOnInit(): void {
@@ -65,6 +69,9 @@ export class SketchpadComponent implements OnInit {
       this.artistPath.strokeWidth = 3;
       this.artistPath.add(point.x, point.y);
       console.log(point);
+    })
+    this.socket.clearDraw$.subscribe(clear =>{
+      this.clearBoard(clear);
     })
   }
 

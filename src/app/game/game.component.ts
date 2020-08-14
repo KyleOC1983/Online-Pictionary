@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from '../services/socket.service';
 import { FormControl } from '@angular/forms';
 
@@ -13,7 +13,7 @@ export class GameComponent implements OnInit, OnDestroy{
   displayName: string = '';
   savedName: boolean = false;
 
-  constructor(private socket: SocketService, private router: Router) { }
+  constructor(private socket: SocketService, private actvr: ActivatedRoute) { }
 
   saveDisplayName(){
     this.displayName = this.displayName;
@@ -21,7 +21,7 @@ export class GameComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.socket.joinGame(this.router.url);
+    this.socket.joinGame(this.actvr.snapshot.params.gameId);
   }
 
   ngOnDestroy(): void{
