@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../services/game.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -9,10 +10,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  roomCode: string
+
+  joinGame(){
+    this.gameService.joinGame(this.roomCode)
+  }
 
   displayName: string = '';  
 
-  constructor(private auth: AngularFireAuth, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private auth: AngularFireAuth, private _snackBar: MatSnackBar, private router: Router, private gameService: GameService) { }
 
   
 

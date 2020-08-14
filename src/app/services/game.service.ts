@@ -17,8 +17,10 @@ export class GameService {
   // Create game
   createGame(gameConfig, host: Player){
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
-      console.log(gameConfig, host);
+
       this.socketService.createGame(this.gameId);
+      console.log(this.gameId);
+
       this.FS.collection('pictionary').add({
         createdTime: new Date(),
         currentArtist: host,
@@ -32,6 +34,10 @@ export class GameService {
     }
   // Join game function
   joinGame(gameId){
+    this.router.navigate([`/game/${gameId}`])
+  }
+  newPlayer(){ 
+    // Save New player to FireStore
   }
   // Leave game function
   leaveGame(){

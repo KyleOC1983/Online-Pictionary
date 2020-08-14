@@ -12,6 +12,7 @@ export class SocketService {
   socket: any;
 
   constructor(private afs: AngularFirestore) {
+
     this.socket = io.connect();
     this.socket.on('joinGame', (displayName, gameId)=>{
       //add user to firestore collection for the game
