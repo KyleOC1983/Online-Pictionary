@@ -20,9 +20,10 @@
 
       <mat-label>Max Score</mat-label>
       <mat-slider thumbLabel tickInterval="1" min='1' max='90' [(ngModel)]='scoreConfig' id='scoreSlider'></mat-slider>
-      <input matInput appearance="fill" type="number" [(ngModel)]='scoreConfig'>
-
-    <h4>Select Number of Rounds</h4>
+      
+      <input  matInput appearance="outline" type="number" [(ngModel)]='scoreConfig'>
+      
+    <h4 class="bump">Select Number of Rounds</h4>
     <mat-form-field appearance="fill">
       <mat-label>Rounds</mat-label>
       <mat-select [(ngModel)]='roundConfig'>
