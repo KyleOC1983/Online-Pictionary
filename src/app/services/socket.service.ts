@@ -13,6 +13,28 @@ export class SocketService {
 
   constructor(private playerState: PlayerState, private topicState: TopicState) {
     this.socket = io.connect();
+    this.socket.on('joinGame', (displayName)=>{
+      //firestore stuff here
+    })
+    this.socket.on('win', (displayName)=>{
+      //update score for user in firestore
+    })
+    this.socket.on('newRound', ()=>{
+      //select new artist, update firestore
+    })
+    this.socket.on('newTopic', ()=>{
+      //select new topic, update firestore with new topic
+    })
+    this.socket.on('leaveGame', (displayName)=>{
+      //remove user from firestore
+    })
+    this.socket.on('joinGame', (displayName)=>{
+      //add user to firestore with init score 0;
+    })
+    this.socket.on('gameEnd', ()=>{
+      //check for user with highest score on firestore
+      //do some kind of win functionality
+    })
   }
   
   // Sketch observable and functionality
@@ -67,11 +89,16 @@ export class SocketService {
     // Join game function
     joinGame(gameId: string){
       this.socket.emit('joinGame', gameId);
-      //If host sees the join game function then they need to add that player to their game with display name
     }
+    // Add user to firestore
+    
     // Leave game function
     leaveGame(){
       this.socket.emit('leaveGame');
+    }
+    // Create game function to setup host socket
+    createGame(gameId){
+      this.socket.emit('createGame', gameId);
     }
     // Win point function
     // On win host updates points for winning player and then triggers the start of a new round

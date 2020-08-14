@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore } from "@angular/fire/firestore"
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   gameId: string
-  constructor(private router: Router, private FS: AngularFirestore ) { }
+  constructor(private router: Router, private FS: AngularFirestore, private socketService: SocketService ) { }
 
 
 // Game functionality
@@ -17,6 +18,7 @@ export class GameService {
   createGame(gameConfig, host: Player){
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
       console.log(gameConfig, host);
+      this.socketService.createGame(this.gameId);
       this.FS.collection('pictionary').add({
         createdTime: new Date(),
         currentArtist: host,
