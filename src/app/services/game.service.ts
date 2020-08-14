@@ -3,12 +3,15 @@ import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore } from "@angular/fire/firestore"
 import { SocketService } from './socket.service';
+import topics from '../shared/topics.arrays';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   gameId: string
+  randomTopic: string = topics[Math.floor(Math.random() * topics.length)]; 
+  
   constructor(private router: Router, private FS: AngularFirestore, private socketService: SocketService ) { }
 
 
@@ -24,7 +27,7 @@ export class GameService {
       this.FS.collection('pictionary').add({
         createdTime: new Date(),
         currentArtist: host,
-        currentTopic: null,
+        currentTopic: this.randomTopic,
         gameId: this.gameId,
         validGameUntilTime: new Date(),
         gameConfig,
@@ -32,6 +35,12 @@ export class GameService {
       }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
       // TODO Save gameConfig to FireStore
     }
+
+    newTopic(gameId){
+      this.FS.collection('pictionary').doc(gameId).update({
+        currentTopic: this.randomTopic});
+    }
+ 
   // Join game function
   joinGame(gameId){
     this.router.navigate([`/game/${gameId}`])
