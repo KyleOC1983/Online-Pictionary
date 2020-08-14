@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-home',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  roomCode: string
+  constructor(private gameService: GameService) { }
 
-  constructor() { }
+  joinGame(){
+    this.gameService.joinGame(this.roomCode)
+  }
 
   ngOnInit(): void {
   }

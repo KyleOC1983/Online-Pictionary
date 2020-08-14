@@ -6,9 +6,9 @@
     <form class="example-form">
       <mat-form-field class="w-100">
         <mat-label>Enter Game URL</mat-label>
-        <input matInput>
+        <input matInput type='text' name="room code" [(ngModel)]='roomCode'>
       </mat-form-field>
-      <button mat-raised-button class="w-100" color="primary">Join Game</button>
+      <button mat-raised-button class="w-100" color="primary" (click)='joinGame()'>Join Game</button>
     </form>
 
     <p class="txt-center">Not joining an existing game?</p>

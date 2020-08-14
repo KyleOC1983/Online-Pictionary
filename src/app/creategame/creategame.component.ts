@@ -24,16 +24,15 @@ export class CreategameComponent implements OnInit {
 
   gameSettings: Object = {}
   creatorName: string;
-  scoreConfig: number;
-  roundConfig: number;
+  scoreConfig: number = 15;
+  roundConfig: number = 3;
   host: Player;
   constructor(private gameService: GameService) { }
 
 
   createGame(){
     this.gameSettings = {creatorName: this.creatorName, maxRounds: this.roundConfig, maxScore: this.scoreConfig }
-    this.host = {displayName: this.creatorName, score: 0, isArtist: true, isHost: true}
-
+    this.host = {displayName: this.creatorName, score: 0, isArtist: true, isHost: true}    
     this.gameService.createGame(this.gameSettings, this.host)
   }
   ngOnInit(): void {  }
