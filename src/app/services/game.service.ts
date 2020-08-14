@@ -10,7 +10,7 @@ import topics from '../shared/topics.arrays';
 })
 export class GameService {
   gameId: string
-  randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
+  randomTopic: string = topics[Math.floor(Math.random() * topics.length)]; 
   
   constructor(private router: Router, private FS: AngularFirestore, private socketService: SocketService ) { }
 
