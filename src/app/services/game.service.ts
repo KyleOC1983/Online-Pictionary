@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore } from "@angular/fire/firestore"
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +19,37 @@ export class GameService {
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
     console.log(this.gameId);
   
-      this.FS.collection('pictionary').add({
-        createdTime: new Date(),
-        currentArtist: host,
-        currentTopic: null,
-        gameId: this.gameId,
-        validGameUntilTime: new Date(),
-        gameConfig,
-        users: [host]
-      }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
-      // TODO Save gameConfig to FireStore
-    }
+    this.FS.collection('pictionary').doc(`${this.gameId}`).set({
+      createdTime: new Date(),
+      currentArtist: host,
+      currentTopic: null,
+      gameId: this.gameId,
+      validGameUntilTime: new Date(),
+      gameConfig,
+      users: [host]
+    }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
+  }
+
   // Join game function
   joinGame(gameId){
     this.router.navigate([`/game/${gameId}`])
   }
-  newPlayer(){ 
-    // Save New player to FireStore
+  // Save New player to FireStore
+  newPlayer(name: string, gameId){ 
+    console.log(name, gameId);
+    let newPlayer: Player = {
+    displayName: name,
+    isArtist: false,
+    isHost: false,
+    score: 0}
+    console.log(newPlayer);
+    
+    const game = this.FS.collection('pictionary').doc(`${gameId}`)
+    game.update({
+      users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
+    }) 
   }
+
   // Leave game function
   leaveGame(){
     this.router.navigate(["/home"])
