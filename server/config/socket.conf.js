@@ -12,11 +12,12 @@ module.exports.listen = (server) => {
         socket.on('joinGame', (gameId) => {
             socket.gameRoom = gameId;
             socket.join(gameId, ()=>{
-                // socket.to(socket.gameRoom).emit('getState');
+                socket.to('host' + socket.gameRoom).emit('joinGame', socket.displayName, socket.gameRoom);
             });
             console.log('joined game ' + socket.gameRoom)
         })
         socket.on('leaveGame', () => {
+            socket.to('host' + socket.gameRoom).emit('leaveGame', socket.displayName, socket.gameRoom);
             socket.gameRoom = null;
             socket.rooms = {};
         })
@@ -31,21 +32,24 @@ module.exports.listen = (server) => {
         socket.on('canDraw', (canDraw)=>{
             io.to(socket.gameRoom).emit('canDraw', canDraw);
         })
-        socket.on('newTopic', (topic) => {
-            io.to(socket.gameRoom).emit('newTopic', topic);
+        socket.on('newTopic', () => {
+            io.to('host' + socket.gameRoom).emit('newTopic', socket.gameRoom);
         })
-        // socket.on('newRound', (roundInfo) => {
-        //     io.to(socket.gameRoom).emit('newRound', roundInfo);
-        // })
+        socket.on('newRound', () => {
+            io.to('host' + socket.gameRoom).emit('newRound', socket.gameRoom);
+        })
         socket.on('win', () => {
-            io.to(socket.gameRoom).emit('win', socket.displayName);
-            io.to(socket.gameRoom).emit('newRound');
+            io.to('host' + socket.gameRoom).emit('win', socket.displayName, socket.gameRoom);
+            io.to('host' + socket.gameRoom).emit('newRound', socket.gameRoom);
         })
-        socket.on('gameEnd', (gameEnd) => {
-            io.to(socket.gameRoom).emit('gameEnd', gameEnd);
+        socket.on('gameEnd', () => {
+            io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom);
         })
-        socket.on('setState', (state)=>{
-            io.to(socket.gameRoom).emit('setState', state);
+        socket.on('createGame', (gameId)=>{
+            socket.join('host' + gameId);
+        })
+        socket.on('clearBoard', (clear)=>{
+            io.to(socket.gameRoom).emit('clearBoard', clear);
         })
     })
     return io;

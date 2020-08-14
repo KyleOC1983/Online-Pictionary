@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Message } from '../interfaces/message.interface';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,34 @@ export class SocketService {
 
   socket: any;
 
-  constructor() {
+  constructor(private afs: AngularFirestore) {
+
     this.socket = io.connect();
+    this.socket.on('joinGame', (displayName, gameId)=>{
+      //add user to firestore collection for the game
+      this.afs.doc('pictionary/' + gameId).update(displayName) //something like this maybe?
+    })
+    this.socket.on('win', (displayName, gameId)=>{
+      //update score for user in firestore
+      this.afs.doc('pictionary/' + gameId).update(displayName) //similar to above
+    })
+    this.socket.on('newRound', (gameId)=>{
+      //select new artist, update firestore, clear board for next artist
+    })
+    this.socket.on('newTopic', (gameId)=>{
+      //select new topic, update firestore with new topic
+    })
+    this.socket.on('leaveGame', (displayName, gameId)=>{
+      //remove user from firestore
+    })
+    this.socket.on('joinGame', (displayName, gameId)=>{
+      //add user to firestore with init score 0;
+    })
+    this.socket.on('gameEnd', (gameId)=>{
+      //check for user with highest score on firestore
+      //do some kind of win functionality
+      //delete entry from firebase at some point
+    })
   }
   
   // Sketch observable and functionality
@@ -40,6 +67,14 @@ export class SocketService {
     this.socket.emit('canDraw', canDraw);
     console.log(canDraw);
   }
+
+  public get clearDraw$(){
+    return Observable.create((observer)=>{
+      this.socket.on('clearBoard', (clear)=>{
+        observer.next(clear);
+      })
+    })
+  }
   
   //  Chat observable and functionality
   public get chatMessage$() {
@@ -66,18 +101,23 @@ export class SocketService {
     // Join game function
     joinGame(gameId: string){
       this.socket.emit('joinGame', gameId);
-      //If host sees the join game function then they need to add that player to their game with display name
     }
+    
     // Leave game function
     leaveGame(){
       this.socket.emit('leaveGame');
     }
-    // Win point function
-    // On win host updates points for winning player and then triggers the start of a new round
 
-    // New round function(s)
-    // Host goes to next artist in state and updates firestore with who the artist is
+    // Create game function to setup host socket
+
+    createGame(gameId){
+      this.socket.emit('createGame', gameId);
+    }
+
     // Clear board for all players
+    clearBoard(clear){
+      this.socket.emit('clearBoard', clear);
+    }
     // Host updates points as necessary
     // Triggered on round win for now, add timer later and work with that too
 
