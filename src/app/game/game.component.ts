@@ -15,6 +15,7 @@ export class GameComponent implements OnInit, OnDestroy{
 
   displayName: string = '';
   savedName: boolean = false;
+  currentGame: string;
 
   constructor(private socket: SocketService, private router: Router, private gameService: GameService, private actr: ActivatedRoute) { }
 
@@ -31,9 +32,13 @@ export class GameComponent implements OnInit, OnDestroy{
     this.gameService.updateArtist(gameId)
   }
 
+  newTopic(currentGame){
+    this.gameService.newTopic(currentGame);
+  }
+
   ngOnInit(): void {
-    this.socket.joinGame(this.actvr.snapshot.params.gameId);
-    this.currentGame = this.actvr.snapshot.params.gameId;
+    this.socket.joinGame(this.actr.snapshot.params.gameId);
+    this.currentGame = this.actr.snapshot.params.gameId;
   }
 
   ngOnDestroy(): void{
