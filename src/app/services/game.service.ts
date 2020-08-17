@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore } from "@angular/fire/firestore"
-import * as firebase from 'firebase';
 import { SocketService } from './socket.service';
-import topics from '../shared/topics.arrays';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class GameService {
 
   db = this.FS.collection('pictionary')
   gameId: string
-  randomTopic: string = topics[Math.floor(Math.random() * topics.length)]; 
+  
   
   constructor(private router: Router, private FS: AngularFirestore, private socketService: SocketService ) { }
 
@@ -28,42 +27,30 @@ export class GameService {
       this.socketService.createGame(this.gameId);
       console.log(this.gameId);
 
-      this.FS.collection('pictionary').add({
+      this.FS.collection('pictionary').doc(`${this.gameId}`).set({
         createdTime: new Date(),
         currentArtist: host,
-        currentTopic: this.randomTopic,
+        currentTopic: '',
         gameId: this.gameId,
         validGameUntilTime: new Date(),
         gameConfig,
-        users: [host]
+        users: []
       }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
       // TODO Save gameConfig to FireStore
     }
 
-    newTopic(gameId){
-      this.FS.collection('pictionary').doc(gameId).update({
-        currentTopic: this.randomTopic});
+    newTopic(){
+      this.socketService.newTopic();
     }
  
   // Join game function
-  joinGame(gameId) {
-    this.router.navigate([`/game/${gameId}`])
+  joinGame(name: string, gameId) {
+    this.socketService.joinGame(name, gameId);
+    this.router.navigate([`/game/${gameId}`]);
   }
-  // Save New player to FireStore
-  newPlayer(name: string, gameId) {
-    console.log(name, gameId);
-    let newPlayer: Player = {
-      displayName: name,
-      isArtist: false,
-      isHost: false,
-      score: 0
-    }
-    console.log(newPlayer);
 
-    const game = this.FS.collection('pictionary').doc(`${gameId}`)
-    game.update({
-      users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
-    })
+  navGame(gameId){
+    this.router.navigate([`/game/${gameId}`])
   }
 
   // Leave game function
@@ -73,24 +60,6 @@ export class GameService {
 
   // Assign Artist
   // Add current artist to end of Users array
-  updateArtist(gameId) {
-    let game = this.FS.collection('pictionary').doc(`${gameId}`)
-    game.get().subscribe(
-      val => {
-        
-        let data = val.data()
-        let oldArtist: Player = data.currentArtist as Player
-        let nextArtist: Player;
-        let users = [...data.users]
-        oldArtist.isArtist = false;        
-        users.push(oldArtist);
-        nextArtist = users.shift();
-        nextArtist.isArtist = true;
-
-        game.update({...data, users: users, currentArtist: nextArtist})
-      }
-    )
-  }
 
   // Win point function
   // Close topic

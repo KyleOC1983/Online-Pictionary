@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SocketService } from '../services/socket.service';
-import { FormControl } from '@angular/forms';
 import { GameService } from '../services/game.service';
-import { Player } from '../interfaces/player.interface';
-import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-game',
@@ -17,27 +15,23 @@ export class GameComponent implements OnInit, OnDestroy{
   savedName: boolean = false;
   currentGame: string;
 
-  constructor(private socket: SocketService, private router: Router, private gameService: GameService, private actr: ActivatedRoute) { }
+  constructor(private socket: SocketService, private gameService: GameService, private actr: ActivatedRoute) { }
 
   savePlayer(){
-    let gameId = this.actr.snapshot.params.gameId
-    console.log(gameId);
     console.log(this.displayName);
     this.savedName = true
-    this.gameService.newPlayer(this.displayName, gameId)
+    this.gameService.joinGame(this.displayName, this.currentGame)
   }
+  // not sure that this actually needs to be a function
+  // assignArtist(){
+  //   this.gameService.updateArtist(this.currentGame)
+  // }
 
-  assignArtist(){
-    let gameId = this.actr.snapshot.params.gameId
-    this.gameService.updateArtist(gameId)
-  }
-
-  newTopic(currentGame){
-    this.gameService.newTopic(currentGame);
+  newTopic(){
+    this.gameService.newTopic();
   }
 
   ngOnInit(): void {
-    this.socket.joinGame(this.actr.snapshot.params.gameId);
     this.currentGame = this.actr.snapshot.params.gameId;
   }
 
