@@ -17,10 +17,6 @@ export class SocketService {
   constructor(private afs: AngularFirestore) {
 
     this.socket = io.connect();
-    this.socket.on('joinGame', (displayName, gameId) => {
-      //add user to firestore collection for the game
-      this.afs.doc('pictionary/' + gameId).update(displayName) //something like this maybe?
-    })
     this.socket.on('win', (displayName, gameId) => {
       //update score for user in firestore
       //set topic to blank string
