@@ -13,11 +13,13 @@ export class JoinGameGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):Observable<boolean> {
-
-      return this.FS.collection('pictionary', ref=> ref.where('gameId', '==', `${next.params.gameId}`)).valueChanges().pipe(
+      console.log(next.params.gameId)
+      return this.FS.collection('pictionary').doc(`${next.params.gameId}`).valueChanges().pipe(
         map(game => {
-          if(game[0]){
-            if (game[0]['users'].length < 10)
+          console.log(game);
+          
+          if(game){
+            if (game['users'].length < 9)
             {return true}
           }
           this.snackBar.open("A game with this ID does not exist. Try again.", null, {
@@ -28,4 +30,5 @@ export class JoinGameGuard implements CanActivate {
         })
       );
     }
+    
   }
