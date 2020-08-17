@@ -249,3 +249,8 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
     font-family: 'Roboto';
   }
 }
+
+.mat-simple-snackbar span {
+  margin: auto;
+  text-align: center;
+}
