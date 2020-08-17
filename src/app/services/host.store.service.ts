@@ -10,16 +10,16 @@ export class HostStoreService {
 
   constructor() { }
 
-  private readonly _user = new BehaviorSubject<boolean>(this.initHostStatus);
+  private readonly _hostStatus = new BehaviorSubject<boolean>(this.initHostStatus);
 
-  readonly $user: Observable<boolean> = this._user.asObservable();
+  readonly $hostStatus: Observable<boolean> = this._hostStatus.asObservable();
 
   private get hostStatus(): boolean{
-    return this._user.getValue();
+    return this._hostStatus.getValue();
   }
 
   private set hostStatus(hostStatus){
-    this._user.next(hostStatus);
+    this._hostStatus.next(hostStatus);
   }
 
   setHost(host){
