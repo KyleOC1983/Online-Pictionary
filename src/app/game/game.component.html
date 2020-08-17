@@ -4,7 +4,7 @@
         <mat-form-field class="example-full-width">
 
             <mat-label></mat-label>
-            <input matInput [(ngModel)]="displayName" name="displayName">
+            <input matInput [(ngModel)]="displayName" name="displayName" (keyup.enter)="savePlayer()">
         </mat-form-field>
     </form>
 
