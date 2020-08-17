@@ -19,7 +19,7 @@ export class JoinGameGuard implements CanActivate {
           console.log(game);
           
           if(game){
-            if (game['users'].length < 10)
+            if (game['users'].length < 9)
             {return true}
           }
           this.snackBar.open("A game with this ID does not exist. Try again.", null, {

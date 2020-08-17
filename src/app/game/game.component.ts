@@ -25,6 +25,10 @@ export class GameComponent implements OnInit, OnDestroy{
     this.gameService.newPlayer(this.displayName, gameId)
   }
 
+  assignArtist(){
+    let gameId = this.actr.snapshot.params.gameId
+    this.gameService.updateArtist(gameId)
+  }
   ngOnInit(): void {
     this.socket.joinGame(this.router.url);
   }
