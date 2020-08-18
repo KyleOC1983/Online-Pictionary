@@ -35,9 +35,6 @@ export class ChatComponent implements OnInit {
         duration: 2000
       });
     }
-    else if (this.messageText.length == 0) {
-      this.messageText = '';
-    }
     let msg: Message = {
       displayName: this.displayName,
       body: this.messageText
