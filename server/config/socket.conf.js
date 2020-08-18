@@ -34,6 +34,8 @@ module.exports.listen = (server) => {
             io.to(socket.gameRoom).emit('canDraw', canDraw);
         })
         socket.on('newTopic', () => {
+            console.log('socket server');
+            console.log(socket.gameRoom);
             io.to('host' + socket.gameRoom).emit('newTopic', socket.gameRoom);
         })
         socket.on('newRound', () => {

@@ -31,6 +31,7 @@ export class GameComponent implements OnInit, OnDestroy{
   // }
 
   newTopic(){
+    console.log("button pressed");
     this.gameService.newTopic();
   }
 

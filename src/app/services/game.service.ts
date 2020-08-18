@@ -26,6 +26,7 @@ export class GameService {
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
 
       this.socketService.createGame(this.gameId);
+      this.socketService.joinGame(host.displayName, this.gameId)
       console.log(this.gameId);
 
       this.FS.collection('pictionary').doc(`${this.gameId}`).set({
@@ -41,6 +42,8 @@ export class GameService {
     }
 
     newTopic(){
+      console.log("game service triggered");
+      
       this.socketService.newTopic();
     }
  

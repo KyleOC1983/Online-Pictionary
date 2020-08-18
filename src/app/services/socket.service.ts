@@ -44,7 +44,11 @@ export class SocketService {
       this.clearDraw$.next(true);
     })
     this.socket.on('newTopic', (gameId) => {
+      console.log(gameId);
+      
       let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
+      console.log(randomTopic);
+      
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
       });
@@ -164,6 +168,8 @@ export class SocketService {
   }
 
   newTopic() {
+    console.log("function hit");
+    
     this.socket.emit('newTopic');
   }
   // Triggered on round win for now, add timer later and work with that too
