@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
-import { AngularFirestore } from "@angular/fire/firestore"
+import { AngularFirestore} from "@angular/fire/firestore"
 import { SocketService } from './socket.service';
 import { map } from 'rxjs/operators';
+
 
 
 @Injectable({
@@ -23,18 +24,26 @@ export class GameService {
 
   // Create game
   createGame(gameConfig, host: Player){
+    this.removeOldGames();
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
+  // The function below is for setting an experation time of 2hrs ofter new game is created
+    let add_hours = function (dt, minutes) {
+      return new Date(dt.getTime() + minutes*3600000);
+  }
+    let validGameUntilTime = (add_hours(new Date(), 2).toString());
+  // End
+    let createdTime = new Date();
 
       this.socketService.createGame(this.gameId);
       this.socketService.joinGame(host.displayName, this.gameId)
       console.log(this.gameId);
 
       this.FS.collection('pictionary').doc(`${this.gameId}`).set({
-        createdTime: new Date(),
+        createdTime,
         currentArtist: host,
         currentTopic: '',
         gameId: this.gameId,
-        validGameUntilTime: new Date(),
+        validGameUntilTime,
         gameConfig,
         users: []
       }).then(res => this.router.navigate([`/game/${this.gameId}`]) )
@@ -47,6 +56,12 @@ export class GameService {
       this.socketService.newTopic();
     }
  
+    getTopic(gameId){
+      let game = this.FS.collection('pictionary').doc(`${gameId}`)
+      return game.get().pipe(
+        map(val=> val.data())
+      )
+    }
   // Join game function
   joinGame(name: string, gameId) {
     this.socketService.joinGame(name, gameId);
@@ -83,6 +98,24 @@ export class GameService {
   // reset timer?
 
   // Game end function(s)
-  // declare game winner
-  // navigate to home - dialog box?
+    // declare game winner
+    // navigate to home - dialog box?
+
+  //  Removes old games from database(firestor)
+  
+
+
+  removeOldGames(){
+    // Grab the current time
+    let now = new Date()
+    // Find all items with time less than current time
+    // Subscribe and delete each item
+    this.FS.collection('pictionary', ref => ref
+      .where('validGameUntilTime', "<", now )).valueChanges().subscribe(expired =>{
+        expired.forEach(g=>{
+          this.FS.collection('pictionary').doc(g['gameId']).delete();
+        })
+      })
+      
+  }
 
