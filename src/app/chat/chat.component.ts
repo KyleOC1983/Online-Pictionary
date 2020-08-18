@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit {
       setTimeout(this.chatScroll.bind(this), 50)
     });
     this.currentGame = this.actr.snapshot.params.gameId;
-    this.gameService.getTopic(this.currentGame).subscribe(val => this.answer = val.topic);
+    this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
   }
 
 }
