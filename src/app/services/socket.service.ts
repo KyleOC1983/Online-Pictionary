@@ -50,10 +50,9 @@ export class SocketService {
           nextArtist = users.shift();
           nextArtist.isArtist = true;
 
-          game.update({ ...data, users: users, currentArtist: nextArtist })
+          game.update({ ...data, users: users, currentArtist: nextArtist }).then(v => this.clearBoard(true))
         }
       )
-      this.clearDraw$.next(true);
     })
     this.socket.on('newTopic', (gameId) => {
       console.log(gameId);
