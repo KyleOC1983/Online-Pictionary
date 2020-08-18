@@ -18,7 +18,9 @@ export class GameComponent implements OnInit, OnDestroy{
   savedName: boolean = false;
   currentGame: string;
   isHost: boolean
-  currentPlayers;
+  currentPlayer;
+  isArtest: boolean = false;
+  
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
@@ -39,11 +41,16 @@ export class GameComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.displayNameStore.player$.subscribe(val=> this.currentPlayers = val)
+    this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
       console.log(val);
 
+      if(this.currentPlayer.displayName == val.displayName){
+        this.isArtest = true;
+      } else{
+        this.isArtest = false;
+      }
        this.gameInfo = {
         gameId: val.gameId,
         artist: val.currentArtist,
