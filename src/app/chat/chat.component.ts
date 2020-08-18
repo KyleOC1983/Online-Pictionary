@@ -37,9 +37,6 @@ export class ChatComponent implements OnInit {
     }
     else if (this.messageText.length == 0) {
       this.messageText = '';
-      this._snackBar.open('Enter a valid message', 'OK', {
-        duration: 2000
-      });
     }
     let msg: Message = {
       displayName: this.displayName,
