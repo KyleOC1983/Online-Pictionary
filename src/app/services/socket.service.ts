@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
+import { DisplaynamestoreService } from './displaynamestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class SocketService {
 
   socket: any;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService) {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
@@ -76,7 +77,7 @@ export class SocketService {
         isHost: false,
         score: 0
       }
-
+      this.playerStore.updatePlayer(newPlayer);
       const game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.update({
         users: firebase.firestore.FieldValue.arrayUnion(newPlayer)

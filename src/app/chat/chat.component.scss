@@ -1,10 +1,11 @@
 .output-box{
-    width: calc(90% - 10px);
+    width: 250px;
     height: 300px;
     margin: 10px auto;
     border: 2px solid #353535;
     background-color: #4b4b4b;
     overflow-y: scroll;
+    word-break: break-all;
     padding: 0px 5px;
     border-radius: 10px;
 }

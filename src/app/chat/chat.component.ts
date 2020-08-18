@@ -2,10 +2,12 @@ import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core'
 import { Message } from '../interfaces/message.interface'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game.service';
 import { ActivatedRoute } from '@angular/router';
+import { Player } from '../interfaces/player.interface';
+import { DisplaynamestoreService } from '../services/displaynamestore.service';
 
 @Component({
   selector: 'app-chat',
@@ -17,40 +19,29 @@ export class ChatComponent implements OnInit {
   messages: Array<Message> = [];
   messageText: string = '';
   displayName: string = '';
-  answer:string = '';
+  answer: string = '';
   currentGame: string;
+  player: Player
+  isArtist: boolean;
 
-  
-  constructor(private socketService: SocketService, private _snackBar: MatSnackBar, 
-    private _ngZone: NgZone, private gameService: GameService, private actr: ActivatedRoute) { }
+
+  constructor(private socketService: SocketService, private _snackBar: MatSnackBar,
+    private _ngZone: NgZone, private gameService: GameService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService) { }
 
   sendMessage() {
-    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
-      let msg: Message = {
-        displayName: this.displayName,
-        body: this.messageText
+    if (this.messageText.length > 0 && this.messageText.length <= 280) {
+      if (this.messageText.toLowerCase() == this.answer.toLowerCase()) {
+        this.socketService.win()
+        this._snackBar.open('That is correct!', 'OK', {
+          duration: 2000
+        });
       }
-      this.socketService.sendChat(msg);
-      this.socketService.win()
-      this.messageText = '';
-
-      this._snackBar.open('That is correct!', 'OK', {
-        duration: 2000
-      });
-    }
-    else if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() != this.answer.toLowerCase()) {
       let msg: Message = {
         displayName: this.displayName,
         body: this.messageText
       }
       this.socketService.sendChat(msg);
       this.messageText = '';
-    }
-    else if (this.messageText.length == 0) {
-      this.messageText = '';
-      this._snackBar.open('Enter a valid message', 'OK', {
-        duration: 2000
-      });
     }
   }
 
@@ -60,7 +51,7 @@ export class ChatComponent implements OnInit {
     } catch (err) { }
   }
 
-  onKeydown(event){
+  onKeydown(event) {
     event.preventDefault();
   }
 
@@ -68,7 +59,7 @@ export class ChatComponent implements OnInit {
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
+      .subscribe(() => this.autosize.resizeToFitContent(true));
   }
   ngOnInit(): void {
     // this.auth.user.subscribe(user => this.displayName = user ? user.displayName : '');
@@ -77,9 +68,10 @@ export class ChatComponent implements OnInit {
       setTimeout(this.chatScroll.bind(this), 50)
     });
     this.currentGame = this.actr.snapshot.params.gameId;
-    this.gameService.gameInfo(this.currentGame).subscribe((val: any) =>{ 
-      this.answer = val.currentTopic;
-    })
+    this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
+    this.displayNameStore.player$.subscribe(val => {
+      this.player = val
+    });
   }
 
 }

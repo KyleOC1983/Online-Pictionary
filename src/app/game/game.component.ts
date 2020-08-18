@@ -4,6 +4,7 @@ import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game.service';
 import { GameInfo } from '../interfaces/gameInfo.interface';
 import { HostStoreService } from '../services/host.store.service';
+import { DisplaynamestoreService } from '../services/displaynamestore.service';
 
 
 @Component({
@@ -17,8 +18,12 @@ export class GameComponent implements OnInit, OnDestroy{
   savedName: boolean = false;
   currentGame: string;
   isHost: boolean
+  currentPlayer;
+  isArtist: boolean = false;
+  
 
-  constructor(private socket: SocketService, private gameService: GameService, private actr: ActivatedRoute, private hostStore: HostStoreService) { }
+  constructor(private socket: SocketService, private gameService: GameService, 
+    private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
 
   savePlayer(){
     this.savedName = true
@@ -35,10 +40,16 @@ export class GameComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
       console.log(val);
 
+      if(this.currentPlayer.displayName == val.displayName){
+        this.isArtist = true;
+      } else{
+        this.isArtist = false;
+      }
        this.gameInfo = {
         gameId: val.gameId,
         artist: val.currentArtist,
