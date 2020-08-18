@@ -20,6 +20,7 @@ export class GameService {
 
   // Create game
   createGame(gameConfig, host: Player){
+    this.removeOldGames();
     this.gameId = Math.random().toString(36).substring(2, 4) + Math.random().toString(36).substring(2, 8);
   // The function below is for setting an experation time of 2hrs ofter new game is created
     let add_hours = function (dt, minutes) {
