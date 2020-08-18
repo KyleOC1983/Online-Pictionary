@@ -6,16 +6,12 @@ import { Player } from '../interfaces/player.interface';
   templateUrl: './scoreboard.component.html',
   styleUrls: ['./scoreboard.component.scss']
 })
-export class ScoreboardComponent implements OnInit  {
+export class ScoreboardComponent implements OnChanges {
   @Input() users: Array<Player>;
   @Input() artist: Player;
-  allUsers: Array<Player>
+  allUsers: Array<Player> = []
   constructor() { }
 
-  ngOnInit(): void {
-    this.allUsers = [...this.users, this.artist]
-    console.log(this.allUsers);   
-  }
   ngOnChanges(){
     this.allUsers = [...this.users, this.artist]
     console.log(this.allUsers);   
