@@ -68,7 +68,6 @@ export class SketchpadComponent implements OnInit {
       this.artistPath.strokeColor = 'black';
       this.artistPath.strokeWidth = 3;
       this.artistPath.add(point.x, point.y);
-      console.log(point);
     })
     this.socket.clearDraw$.subscribe(clear =>{
       this.clearBoard(clear);

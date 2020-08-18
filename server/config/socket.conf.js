@@ -43,7 +43,7 @@ module.exports.listen = (server) => {
         })
         socket.on('win', () => {
             io.to('host' + socket.gameRoom).emit('win', socket.displayName, socket.gameRoom);
-            io.to('host' + socket.gameRoom).emit('newRound', socket.gameRoom);
+            
         })
         socket.on('gameEnd', () => {
             io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom);

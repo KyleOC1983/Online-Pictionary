@@ -19,10 +19,22 @@ export class SocketService {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
-      //update score for user in firestore
-      //set topic to blank string
-      this.afs.doc('pictionary/' + gameId).update(displayName) //similar to above
-      //check to see if it was the last win of the game or not and trigger functionality accordingly
+        
+        let game = this.afs.collection('pictionary').doc(`${gameId}`)
+        game.get().subscribe(
+          val => {
+            let data = val.data();
+            let users = [...data.users];
+            let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
+            let topic = data.currentTopic
+            users[winner].score++;
+            console.log(users[winner]);
+            topic = '';    
+            console.log(topic);
+            
+            game.update({...data, users: users, currentTopic: topic }).then(v => this.newRound());          
+          }
+        )
     })
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
@@ -39,10 +51,9 @@ export class SocketService {
           nextArtist = users.shift();
           nextArtist.isArtist = true;
 
-          game.update({ ...data, users: users, currentArtist: nextArtist })
+          game.update({ ...data, users: users, currentArtist: nextArtist }).then(v => this.clearBoard(true))
         }
       )
-      this.clearDraw$.next(true);
     })
     this.socket.on('newTopic', (gameId) => {
       console.log(gameId);
@@ -161,6 +172,8 @@ export class SocketService {
   }
   // Host updates points as necessary
   win() {
+    console.log("win socket fn hit");
+    
     this.socket.emit('win');
   }
   // Probably won't be used

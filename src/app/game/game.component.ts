@@ -26,7 +26,6 @@ export class GameComponent implements OnInit, OnDestroy{
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
 
   savePlayer(){
-    console.log(this.displayName);
     this.savedName = true
     this.gameService.joinGame(this.displayName, this.currentGame)
   }
@@ -36,7 +35,7 @@ export class GameComponent implements OnInit, OnDestroy{
   // }
 
   newTopic(){
-    console.log("button pressed");
+
     this.gameService.newTopic();
   }
 
@@ -62,12 +61,9 @@ export class GameComponent implements OnInit, OnDestroy{
           currentRound: val.gameConfig.currentRound
         }
       }
-      console.log(this.gameInfo.artist);
     })
-    console.log(this.isHost);
     this.hostStore.$hostStatus.subscribe(val =>
       {this.isHost = val});
-      console.log(this.isHost); 
     if(this.isHost === true){
       this.savedName = true
     } 
