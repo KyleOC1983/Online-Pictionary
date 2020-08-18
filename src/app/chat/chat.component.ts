@@ -70,11 +70,10 @@ export class ChatComponent implements OnInit {
     });
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
-    this.displayNameStore.player$.subscribe(val => { this.player = val });
-    console.log(this.player);
-    if (this.player.isArtist == true) {
-      this.isArtist == true
-    }
+    this.displayNameStore.player$.subscribe(val => 
+      { 
+        this.player = val 
+      });
   }
 
 }
