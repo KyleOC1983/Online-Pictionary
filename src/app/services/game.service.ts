@@ -88,9 +88,9 @@ export class GameService {
 
 
   // Win point function
-  // Close topic
-  // Assign point to correct player , update state
-  // update scoreboard
+    // Close topic
+    // Assign point to correct player , update state
+    // update scoreboard
 
   // New round function(s)
   // clear the sketchpad

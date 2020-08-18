@@ -7,14 +7,15 @@ import { Player } from '../interfaces/player.interface';
   styleUrls: ['./scoreboard.component.scss']
 })
 export class ScoreboardComponent implements OnChanges {
-  @Input() users: Array<Player>;
+  @Input() users: Array<Player> = [];
   @Input() artist: Player;
   allUsers: Array<Player> = []
   constructor() { }
 
-  ngOnChanges(){
-    this.allUsers = [...this.users, this.artist]
-    console.log(this.allUsers);   
+  ngOnChanges() {
+    if (this.users && this.artist) {
+      this.allUsers = [...this.users, this.artist]
+    }
   }
 
 }

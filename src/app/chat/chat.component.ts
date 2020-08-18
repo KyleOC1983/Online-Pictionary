@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit {
         body: this.messageText
       }
       this.socketService.sendChat(msg);
+      this.socketService.win()
       this.messageText = '';
 
       this._snackBar.open('That is correct!', 'OK', {
@@ -76,7 +77,9 @@ export class ChatComponent implements OnInit {
       setTimeout(this.chatScroll.bind(this), 50)
     });
     this.currentGame = this.actr.snapshot.params.gameId;
-    this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
+    this.gameService.gameInfo(this.currentGame).subscribe((val: any) =>{ 
+      this.answer = val.currentTopic;
+    })
   }
 
 }
