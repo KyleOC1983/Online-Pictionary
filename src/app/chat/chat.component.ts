@@ -29,18 +29,19 @@ export class ChatComponent implements OnInit {
     private _ngZone: NgZone, private gameService: GameService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService) { }
 
   sendMessage() {
-
-    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
-      this._snackBar.open('That is correct!', 'OK', {
-        duration: 2000
-      });
+    if (this.messageText.length > 0 && this.messageText.length <= 280) {
+      if (this.messageText.toLowerCase() == this.answer.toLowerCase()) {
+        this._snackBar.open('That is correct!', 'OK', {
+          duration: 2000
+        });
+      }
+      let msg: Message = {
+        displayName: this.displayName,
+        body: this.messageText
+      }
+      this.socketService.sendChat(msg);
+      this.messageText = '';
     }
-    let msg: Message = {
-      displayName: this.displayName,
-      body: this.messageText
-    }
-    this.socketService.sendChat(msg);
-    this.messageText = '';
   }
 
   chatScroll(): void {
