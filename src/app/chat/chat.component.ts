@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {take} from 'rxjs/operators';
 import { SocketService } from '../services/socket.service';
+import { GameService } from '../services/game.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -15,9 +17,12 @@ export class ChatComponent implements OnInit {
   messages: Array<Message> = [];
   messageText: string = '';
   displayName: string = '';
-  answer = "generic answer";
+  answer:string = '';
+  currentGame: string;
+
   
-  constructor(private socketService: SocketService, private _snackBar: MatSnackBar, private _ngZone: NgZone) { }
+  constructor(private socketService: SocketService, private _snackBar: MatSnackBar, 
+    private _ngZone: NgZone, private gameService: GameService, private actr: ActivatedRoute) { }
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
@@ -70,6 +75,8 @@ export class ChatComponent implements OnInit {
       this.messages.push(msg)
       setTimeout(this.chatScroll.bind(this), 50)
     });
+    this.currentGame = this.actr.snapshot.params.gameId;
+    this.gameService.getTopic(this.currentGame).subscribe(val => this.answer = val.topic);
   }
 
 }

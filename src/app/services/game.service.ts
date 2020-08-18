@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore} from "@angular/fire/firestore"
 import { SocketService } from './socket.service';
+import { map } from 'rxjs/operators';
 
 
 
@@ -52,6 +53,12 @@ export class GameService {
       this.socketService.newTopic();
     }
  
+    getTopic(gameId){
+      let game = this.FS.collection('pictionary').doc(`${gameId}`)
+      return game.get().pipe(
+        map(val=> val.data())
+      )
+    }
   // Join game function
   joinGame(name: string, gameId) {
     this.socketService.joinGame(name, gameId);
