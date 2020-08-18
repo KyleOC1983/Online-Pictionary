@@ -13,19 +13,19 @@
 </div>
 
 <ng-container *ngIf="savedName">
-<div class="container">
-    <div class="stats-box container">
-        <h2>ROUND :</h2>
-        <h2>ARTIST :</h2>
-        <h2>TOPIC :</h2>
-        <h2>TIME :</h2>
+    <div class="container">
+        <div class="stats-box container">
+            <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} </h2>
+            <h2>ARTIST : {{gameInfo?.artist.displayName}} </h2>  
+            <h2>TOPIC : {{gameInfo?.currentTopic}} </h2>
+            <h2>TIME :</h2>
+        </div>
     </div>
-</div>
 
-<div class="container">
-    <app-chat class="fb-20"></app-chat>
-    <app-sketchpad class="fb-20"></app-sketchpad>
-    <app-scoreboard class="fb-20"></app-scoreboard>
-</div>
-<button mat-raised-button color="warn" (click)="newTopic()">New Topic</button>
+    <div class="container">
+        <app-chat class="fb-20"></app-chat>
+        <app-sketchpad class="fb-20"></app-sketchpad>
+        <app-scoreboard class="fb-20"></app-scoreboard>
+    </div>
+    <button mat-raised-button color="warn" (click)="newTopic()">New Topic</button>
 </ng-container>

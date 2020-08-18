@@ -35,6 +35,7 @@ export class GameService {
     let createdTime = new Date();
 
       this.socketService.createGame(this.gameId);
+      this.socketService.joinGame(host.displayName, this.gameId)
       console.log(this.gameId);
 
       this.FS.collection('pictionary').doc(`${this.gameId}`).set({
@@ -50,6 +51,8 @@ export class GameService {
     }
 
     newTopic(){
+      console.log("game service triggered");
+      
       this.socketService.newTopic();
     }
  
@@ -74,8 +77,14 @@ export class GameService {
     this.router.navigate(["/home"])
   }
 
-  // Assign Artist
-  // Add current artist to end of Users array
+  gameInfo(gameId){
+    let game = this.FS.collection('pictionary').doc(`${gameId}`)
+    return game.valueChanges().pipe(
+      map(val => {   
+      return val}
+      ))
+    }
+  } 
 
   // Win point function
   // Close topic
@@ -110,4 +119,3 @@ export class GameService {
       
   }
 
-}
