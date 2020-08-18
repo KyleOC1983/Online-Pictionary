@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SocketService } from '../services/socket.service';
-import { FormControl } from '@angular/forms';
 import { GameService } from '../services/game.service';
+
 
 @Component({
   selector: 'app-game',
@@ -13,23 +13,26 @@ export class GameComponent implements OnInit, OnDestroy{
 
   displayName: string = '';
   savedName: boolean = false;
-  currentGame: string = '';
+  currentGame: string;
 
-  constructor(private socket: SocketService, private actvr: ActivatedRoute, private gameService: GameService) { }
+  constructor(private socket: SocketService, private gameService: GameService, private actr: ActivatedRoute) { }
 
-  saveDisplayName(){
-    this.displayName = this.displayName;
-    this.savedName = true;
+  savePlayer(){
+    console.log(this.displayName);
+    this.savedName = true
+    this.gameService.joinGame(this.displayName, this.currentGame)
   }
+  // not sure that this actually needs to be a function
+  // assignArtist(){
+  //   this.gameService.updateArtist(this.currentGame)
+  // }
 
-  newTopic(currentGame){
-    this.gameService.newTopic(currentGame);
+  newTopic(){
+    this.gameService.newTopic();
   }
-
 
   ngOnInit(): void {
-    this.socket.joinGame(this.actvr.snapshot.params.gameId);
-    this.currentGame = this.actvr.snapshot.params.gameId;
+    this.currentGame = this.actr.snapshot.params.gameId;
   }
 
   ngOnDestroy(): void{

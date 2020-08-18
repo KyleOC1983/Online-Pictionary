@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   roomCode: string
 
-  joinGame(){
-    this.gameService.joinGame(this.roomCode)
+  navGame(){
+    this.gameService.navGame(this.roomCode)
   }
 
   displayName: string = '';  

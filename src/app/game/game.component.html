@@ -4,12 +4,12 @@
         <mat-form-field class="example-full-width">
 
             <mat-label></mat-label>
-            <input matInput [(ngModel)]="displayName" name="displayName">
+            <input matInput [(ngModel)]="displayName" name="displayName" (keyup.enter)="savePlayer()">
         </mat-form-field>
     </form>
 
 
-    <button mat-raised-button color="primary" class="smallButton" (click)="saveDisplayName()">Submit</button>
+    <button mat-raised-button color="primary" class="smallButton" (click)="savePlayer()">Submit</button>
 </div>
 
 <ng-container *ngIf="savedName">
@@ -21,10 +21,11 @@
         <h2>TIME :</h2>
     </div>
 </div>
+
 <div class="container">
     <app-chat class="fb-20"></app-chat>
     <app-sketchpad class="fb-20"></app-sketchpad>
     <app-scoreboard class="fb-20"></app-scoreboard>
 </div>
-<button mat-raised-button color="warn" (click)="newTopic(currentGame)">New Topic</button>
+<button mat-raised-button color="warn" (click)="newTopic()">New Topic</button>
 </ng-container>

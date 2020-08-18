@@ -9,8 +9,9 @@ module.exports.listen = (server) => {
         socket.on('displayName', (displayName) => {
             socket.displayName = displayName;
         })
-        socket.on('joinGame', (gameId) => {
+        socket.on('joinGame', (displayName, gameId) => {
             socket.gameRoom = gameId;
+            socket.displayName = displayName
             socket.join(gameId, ()=>{
                 socket.to('host' + socket.gameRoom).emit('joinGame', socket.displayName, socket.gameRoom);
             });
@@ -22,7 +23,7 @@ module.exports.listen = (server) => {
             socket.rooms = {};
         })
         socket.on('newMessage', (msg) => {
-            io.to(socket.gameRoom).emit('newMessage', msg);
+            io.to(socket.gameRoom).emit('newMessage', msg, socket.displayName);
         })
         socket.on('draw', (draw) => {
             console.log('hitting draw');
@@ -46,7 +47,9 @@ module.exports.listen = (server) => {
             io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom);
         })
         socket.on('createGame', (gameId)=>{
+            console.log('joining host game');
             socket.join('host' + gameId);
+            console.log('joined ' + gameId)
         })
         socket.on('clearBoard', (clear)=>{
             io.to(socket.gameRoom).emit('clearBoard', clear);
