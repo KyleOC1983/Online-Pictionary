@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
 import { AngularFirestore } from "@angular/fire/firestore"
 import { SocketService } from './socket.service';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -58,8 +59,14 @@ export class GameService {
     this.router.navigate(["/home"])
   }
 
-  // Assign Artist
-  // Add current artist to end of Users array
+  gameInfo(gameId){
+    let game = this.FS.collection('pictionary').doc(`${gameId}`)
+    return game.valueChanges().pipe(
+      map(val => {   
+      return val}
+      ))
+    }
+  } 
 
   // Win point function
   // Close topic
@@ -76,4 +83,3 @@ export class GameService {
   // declare game winner
   // navigate to home - dialog box?
 
-}
