@@ -25,7 +25,7 @@
     <div class="container">
         <app-chat class="fb-20"></app-chat>
         <app-sketchpad class="fb-20"></app-sketchpad>
-        <app-scoreboard class="fb-20"></app-scoreboard>
+        <app-scoreboard class="fb-20" [users]="gameInfo?.users" [artist]="gameInfo?.artist"></app-scoreboard>
     </div>
     <button mat-raised-button color="warn" (click)="newTopic()">New Topic</button>
 </ng-container>

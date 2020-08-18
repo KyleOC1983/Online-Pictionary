@@ -51,7 +51,7 @@ export class GameComponent implements OnInit, OnDestroy{
           currentRound: val.gameConfig.currentRound
         }
       }
-      console.log(this.gameInfo);
+      console.log(this.gameInfo.artist);
     })
     console.log(this.isHost);
     this.hostStore.$hostStatus.subscribe(val =>
