@@ -19,7 +19,7 @@ export class GameComponent implements OnInit, OnDestroy{
   currentGame: string;
   isHost: boolean
   currentPlayer;
-  isArtest: boolean = false;
+  isArtist: boolean = false;
   
 
   constructor(private socket: SocketService, private gameService: GameService, 
@@ -47,9 +47,9 @@ export class GameComponent implements OnInit, OnDestroy{
       console.log(val);
 
       if(this.currentPlayer.displayName == val.displayName){
-        this.isArtest = true;
+        this.isArtist = true;
       } else{
-        this.isArtest = false;
+        this.isArtist = false;
       }
        this.gameInfo = {
         gameId: val.gameId,
