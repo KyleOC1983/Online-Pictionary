@@ -1,15 +1,10 @@
-import { Injectable, Query } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player } from '../interfaces/player.interface';
-import { AngularFirestore, fromCollectionRef } from "@angular/fire/firestore"
+import { AngularFirestore} from "@angular/fire/firestore"
 import { SocketService } from './socket.service';
 import topics from '../shared/topics.arrays';
-import { Time } from '@angular/common';
-import { time } from 'console';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
-import { firestore } from 'firebase';
-import { element } from 'protractor';
-import { query } from '@angular/animations';
+
 
 @Injectable({
   providedIn: 'root'
@@ -92,10 +87,17 @@ export class GameService {
   
 
 
-  removeOldGames(gameId, createdTime){
-    if(this.FS.collection('pictiionary', ref => ref
-      .where('validGameUntilTime', "<", createdTime )).valueChanges()
-    )
-   );   
-    
-  };
+  removeOldGames(){
+    // Grab the current time
+    let now = new Date()
+    // Find all items with time less than current time
+    // Subscribe and delete each item
+    this.FS.collection('pictionary', ref => ref
+      .where('validGameUntilTime', "<", now )).valueChanges().subscribe(expired =>{
+        expired.forEach(g=>{
+          this.FS.collection('pictionary').doc(g['gameId']).delete();
+        })
+      })
+      
+  }
+}
