@@ -19,15 +19,24 @@ export class ChatComponent implements OnInit {
   messages: Array<Message> = [];
   messageText: string = '';
   displayName: string = '';
-  answer: string;
+  answer: string = '';
   currentGame: string;
   player: Player
+  isArtist: boolean;
+
 
   constructor(private socketService: SocketService, private _snackBar: MatSnackBar,
     private _ngZone: NgZone, private gameService: GameService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService) { }
 
   sendMessage() {
-
+    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
+      this._snackBar.open('That is correct!', 'OK', {
+        duration: 2000
+      });
+    }
+    else if (this.messageText.length == 0) {
+      this.messageText = '';
+    }
     let msg: Message = {
       displayName: this.displayName,
       body: this.messageText
@@ -35,11 +44,6 @@ export class ChatComponent implements OnInit {
     this.socketService.sendChat(msg);
     this.messageText = '';
 
-    if (this.messageText.length > 0 && this.messageText.length <= 280 && this.messageText.toLowerCase() == this.answer.toLowerCase()) {
-      this._snackBar.open('That is correct!', 'OK', {
-        duration: 2000
-      });
-    }
   }
 
   chatScroll(): void {
