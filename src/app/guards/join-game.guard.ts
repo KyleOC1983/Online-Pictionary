@@ -13,10 +13,9 @@ export class JoinGameGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):Observable<boolean> {
-      console.log(next.params.gameId)
+      
       return this.FS.collection('pictionary').doc(`${next.params.gameId}`).valueChanges().pipe(
         map(game => {
-          console.log(game);
           
           if(game){
             if (game['users'].length < 9)

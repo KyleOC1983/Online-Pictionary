@@ -36,8 +36,7 @@ export class GameService {
 
     this.socketService.createGame(host.displayName, this.gameId);
     
-    console.log(this.gameId);
-
+    
     this.FS.collection('pictionary').doc(`${this.gameId}`).set({
       createdTime,
       currentArtist: host,
@@ -51,7 +50,7 @@ export class GameService {
   }
 
   newTopic() {
-    console.log("game service triggered");
+    
 
     this.socketService.newTopic();
   }

@@ -19,22 +19,22 @@ export class SocketService {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
-
-      let game = this.afs.collection('pictionary').doc(`${gameId}`)
-      game.get().subscribe(
-        val => {
-          let data = val.data();
-          let users = [...data.users];
-          let winner = (users.findIndex((user) => user.displayName === `${displayName}`));
-          let topic = data.currentTopic
-          users[winner].score++;
-          console.log(users[winner]);
-          topic = '';
-          console.log(topic);
-
-          game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
-        }
-      )
+        
+        let game = this.afs.collection('pictionary').doc(`${gameId}`)
+        game.get().subscribe(
+          val => {
+            let data = val.data();
+            let users = [...data.users];
+            let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
+            let topic = data.currentTopic
+            users[winner].score++;
+            
+            topic = '';    
+            
+            
+            game.update({...data, users: users, currentTopic: topic }).then(v => this.newRound());          
+          }
+        )
     })
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
@@ -58,11 +58,7 @@ export class SocketService {
       )
     })
     this.socket.on('newTopic', (gameId) => {
-      console.log(gameId);
-
-      let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
-      console.log(randomTopic);
-
+     let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
       });
@@ -96,7 +92,6 @@ export class SocketService {
         score: 0
       }
 
-      console.log(newPlayer);
 
       const game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.update({
@@ -122,7 +117,7 @@ export class SocketService {
 
   sendSketch(draw) {
     this.socket.emit('draw', draw);
-    console.log(draw);
+    
   }
 
   public get canDraw$() {
@@ -135,7 +130,7 @@ export class SocketService {
 
   canDraw(canDraw) {
     this.socket.emit('canDraw', canDraw);
-    console.log(canDraw);
+    
   }
 
   public get clearDraw$() {
@@ -183,7 +178,7 @@ export class SocketService {
   // Create game function to setup host socket
 
   createGame(displayName, gameId) {
-    console.log('creating game');
+    
     this.playerStore.updatePlayer(displayName);
     this.socket.emit('createGame', displayName, gameId);
   }
@@ -194,7 +189,6 @@ export class SocketService {
   }
   // Host updates points as necessary
   win() {
-    console.log("win socket fn hit");
 
     this.socket.emit('win');
   }
@@ -204,7 +198,6 @@ export class SocketService {
   }
 
   newTopic() {
-    console.log("function hit");
 
     this.socket.emit('newTopic');
   }

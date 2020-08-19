@@ -71,17 +71,17 @@ export class ChatComponent implements OnInit {
     });
     this.currentGame = this.actr.snapshot.params.gameId;
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
-    console.log(this.currentPlayer);
+    
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      console.log(val);
+    
       this.answer = val.currentTopic;
-      console.log(val.currentArtist.displayName);
+    
       if(this.currentPlayer == val.currentArtist.displayName){
-        console.log('is artist')
+    
         this.isArtist = true;
       } else{
-        console.log('not artist')
+    
         this.isArtist = false;
       }
     })
