@@ -15,10 +15,10 @@ export class AuthenticationService {
   }
   login() {
     this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((user) => { console.log(user); });
+      .then((user) => {  });
   }
   
   logout() {
-    this.afAuth.signOut().then(() => { console.log('logged out') });
+    this.afAuth.signOut().then(() => { });
   }
 }

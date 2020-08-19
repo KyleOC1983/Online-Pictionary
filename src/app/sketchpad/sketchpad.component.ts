@@ -38,7 +38,7 @@ export class SketchpadComponent implements OnInit {
     if(this.myDraw && this.canDraw){
     this.myPath.add(new Point(event.layerX, event.layerY));
     this.socket.sendSketch({x: event.layerX, y: event.layerY});
-    console.log(new Point(event.layerX, event.layerY));
+    
     }
   }
 
@@ -80,16 +80,14 @@ export class SketchpadComponent implements OnInit {
     })
     this.currentGame = this.actr.snapshot.params.gameId;
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
-    console.log(this.currentPlayer);
+    
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      console.log(val);
-      console.log(val.currentArtist.displayName);
       if(this.currentPlayer == val.currentArtist.displayName){
-        console.log('is artist')
+        
         this.myDraw = true;
       } else{
-        console.log('not artist')
+        
         this.myDraw = false;
       }
     })

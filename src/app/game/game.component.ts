@@ -41,16 +41,12 @@ export class GameComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
-    console.log(this.currentPlayer);
+    
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      console.log(val);
-      console.log(val.currentArtist.displayName);
       if(this.currentPlayer == val.currentArtist.displayName){
-        console.log('is artist')
         this.isArtist = true;
       } else{
-        console.log('not artist')
         this.isArtist = false;
       }
        this.gameInfo = {
