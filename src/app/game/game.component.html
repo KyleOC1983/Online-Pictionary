@@ -15,7 +15,7 @@
 <ng-container *ngIf="savedName">
     <div class="container">
         <div class="stats-box container">
-            <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} </h2>
+            <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} / {{gameInfo?.gameConfig.maxRounds}}</h2>
             <h2>ARTIST : {{gameInfo?.artist.displayName}} </h2>  
             <h2 *ngIf = "isArtist">TOPIC : {{gameInfo?.currentTopic}} </h2>
             <h2>TIME :</h2>
