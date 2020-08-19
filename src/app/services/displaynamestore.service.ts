@@ -8,19 +8,19 @@ import { Player } from '../interfaces/player.interface';
 })
 export class DisplaynamestoreService {
 
-initialPlayer:  Player; 
+initialDisplayName:  string; 
 
   constructor() { }
 
-private readonly _player = new BehaviorSubject<Player>(this.initialPlayer);
+private readonly _player = new BehaviorSubject<string>(this.initialDisplayName);
 
-readonly player$: Observable<Player> = this._player.asObservable();
+readonly player$: Observable<string> = this._player.asObservable();
 
-private get player(): Player{
+private get player(): string{
   return this._player.getValue();
 }
 
-private set player(val: Player){
+private set player(val: string){
     this._player.next(val);
 
 }
