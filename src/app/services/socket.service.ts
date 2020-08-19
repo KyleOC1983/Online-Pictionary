@@ -14,31 +14,31 @@ import { DisplaynamestoreService } from './displaynamestore.service';
 export class SocketService {
 
   socket: any;
-  
+
 
   constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService) {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
-        
-        let game = this.afs.collection('pictionary').doc(`${gameId}`)
-        game.get().subscribe(
-          val => {
-            let data = val.data();
-            let users = [...data.users];
-            let allUsers = [...data.users, data.currentArtist]
-            let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
-            let topic = data.currentTopic
-            users[winner].score++;
-            if(users[winner].score === data.gameConfig.maxScore){
-              this.gameEnd(allUsers)
-            }
-            topic = '';    
-            
-            
-            game.update({...data, users: users, currentTopic: topic }).then(v => this.newRound());          
+
+      let game = this.afs.collection('pictionary').doc(`${gameId}`)
+      game.get().subscribe(
+        val => {
+          let data = val.data();
+          let users = [...data.users];
+          let allUsers = [...data.users, data.currentArtist]
+          let winner = (users.findIndex((user) => user.displayName === `${displayName}`));
+          let topic = data.currentTopic
+          users[winner].score++;
+          if (users[winner].score === data.gameConfig.maxScore) {
+            this.gameEnd(allUsers)
           }
-        )
+          topic = '';
+
+
+          game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+        }
+      )
 
     })
     this.socket.on('newRound', (gameId) => {
@@ -57,14 +57,14 @@ export class SocketService {
           }
           nextArtist = users.shift();
           nextArtist.isArtist = true;
-          if(nextArtist.isHost){
+          if (nextArtist.isHost) {
             data.gameConfig.currentRound++
-            if(data.gameConfig.currentRound > data.gameConfig.maxRounds){
+            if (data.gameConfig.currentRound > data.gameConfig.maxRounds) {
               data.gameConfig.currentRound--;
               this.gameEnd(allUsers)
             }
           }
-          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig}).then(v => this.clearBoard(true))
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig }).then(v => this.clearBoard(true))
         }
       )
     })
@@ -112,70 +112,70 @@ export class SocketService {
     })
     this.socket.on('gameEnd', (gameId, allUsers) => {
       console.log(`Game in room ${gameId} has ended`);
-      allUsers.sort(function (a,b){
+      allUsers.sort(function (a, b) {
         return b.score - a.score
       })
       let winner = allUsers.shift()
       console.log(winner);
-      
+
       //check for user with highest score on firestore
       //do some kind of win functionality
       //delete entry from firebase at some point
     })
 
-}
+  }
 
-public get startTimer$() {
-  return Observable.create((observer) => {
-    this.socket.on('startTimer', (time: boolean) => {
-      observer.next(time);
+  public get startTimer$() {
+    return Observable.create((observer) => {
+      this.socket.on('startTimer', (time: boolean) => {
+        observer.next(time);
+      })
     })
-  })
-}
+  }
   // Sketch observable and functionality
   public get newSketch$() {
-  return Observable.create((observer) => {
-    this.socket.on('draw', (draw) => {
-      observer.next(draw);
+    return Observable.create((observer) => {
+      this.socket.on('draw', (draw) => {
+        observer.next(draw);
+      })
     })
-  })
-}
+  }
 
-sendSketch(draw) {
-  this.socket.emit('draw', draw);
+  sendSketch(draw) {
+    this.socket.emit('draw', draw);
 
-}
+  }
 
   public get canDraw$() {
-  return Observable.create((observer) => {
-    this.socket.on('canDraw', (canDraw) => {
-      observer.next(canDraw);
-    });
-  });
-}
-
-canDraw(canDraw) {
-  this.socket.emit('canDraw', canDraw);
-
-}
-
-  public get clearDraw$() {
-  return Observable.create((observer) => {
-    this.socket.on('clearBoard', (clear) => {
-      observer.next(clear);
-    })
-  })
-}
-
-  //  Chat observable and functionality
-  public get chatMessage$() {
-  return Observable.create((observer) => {
-    this.socket.on('newMessage', (message, displayName) => {
-      message.displayName = displayName;
-      observer.next(message);
+    return Observable.create((observer) => {
+      this.socket.on('canDraw', (canDraw) => {
+        observer.next(canDraw);
+      });
     });
   }
 
+  canDraw(canDraw) {
+    this.socket.emit('canDraw', canDraw);
+
+  }
+
+  public get clearDraw$() {
+    return Observable.create((observer) => {
+      this.socket.on('clearBoard', (clear) => {
+        observer.next(clear);
+      })
+    })
+  }
+
+  //  Chat observable and functionality
+  public get chatMessage$() {
+    return Observable.create((observer) => {
+      this.socket.on('newMessage', (message, displayName) => {
+        message.displayName = displayName;
+        observer.next(message);
+      });
+    })
+  }
   sendChat(msg: Message) {
     this.socket.emit('newMessage', msg);
   }
@@ -203,7 +203,7 @@ canDraw(canDraw) {
   // Create game function to setup host socket
 
   createGame(displayName, gameId) {
-    
+
     this.playerStore.updatePlayer(displayName);
     this.socket.emit('createGame', displayName, gameId);
   }
@@ -227,13 +227,13 @@ canDraw(canDraw) {
     this.socket.emit('newTopic');
   }
   // Triggered on round win for now, add timer later and work with that too
-  gameEnd(allUsers: Array<Object>){
+  gameEnd(allUsers: Array<Object>) {
     this.socket.emit('gameEnd', allUsers)
   }
 
-startTimer(time){
-  this.socket.emit('startTimer', time);
-}
+  startTimer(time) {
+    this.socket.emit('startTimer', time);
+  }
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room
 }
