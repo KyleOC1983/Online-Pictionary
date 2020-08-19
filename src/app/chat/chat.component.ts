@@ -70,12 +70,12 @@ export class ChatComponent implements OnInit {
       setTimeout(this.chatScroll.bind(this), 50)
     });
     this.currentGame = this.actr.snapshot.params.gameId;
-    this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
     console.log(this.currentPlayer);
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
       console.log(val);
+      this.answer = val.currentTopic;
       console.log(val.currentArtist.displayName);
       if(this.currentPlayer == val.currentArtist.displayName){
         console.log('is artist')

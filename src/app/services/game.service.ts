@@ -56,12 +56,6 @@ export class GameService {
     this.socketService.newTopic();
   }
 
-  getTopic(gameId) {
-    let game = this.FS.collection('pictionary').doc(`${gameId}`)
-    return game.get().pipe(
-      map(val => val.data())
-    )
-  }
   // Join game function
   joinGame(name: string, gameId) {
     this.socketService.joinGame(name, gameId);
