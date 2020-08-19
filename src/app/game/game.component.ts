@@ -22,6 +22,7 @@ export class GameComponent implements OnInit, OnDestroy{
   currentPlayer;
   isArtist: boolean = false;
   timer: number = 10;
+  subRef: Subscription;
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
@@ -46,21 +47,23 @@ export class GameComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.socket.startTimer$.subscribe(val =>{
       let sub = interval(1000)
-      let subRef: Subscription
       if(val == true){
         
-        subRef = sub.subscribe(v=>{
+        this.subRef = sub.subscribe(v=>{
           this.timer = 10-v;
           
           if(this.timer == 0){
-            this.socket.newRound();
-            subRef.unsubscribe();
+            
+            this.subRef.unsubscribe();
             this.timer = 10
+            if(this.isHost){
+              this.socket.newRound();
+            }
           }
         })
       }
-          else if(subRef && !val){
-            subRef.unsubscribe()
+          else if(this.subRef && !val){
+            this.subRef.unsubscribe()
             this.timer = 10;
           }
     })
