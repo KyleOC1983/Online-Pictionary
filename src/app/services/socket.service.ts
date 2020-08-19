@@ -7,7 +7,6 @@ import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER } from '@angular/cdk/overlay/keyboard/overlay-keyboard-dispatcher';
 
 @Injectable({
   providedIn: 'root'
@@ -21,41 +20,51 @@ export class SocketService {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
+        
+        let game = this.afs.collection('pictionary').doc(`${gameId}`)
+        game.get().subscribe(
+          val => {
+            let data = val.data();
+            let users = [...data.users];
+            let allUsers = [...data.users, data.currentArtist]
+            let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
+            let topic = data.currentTopic
+            users[winner].score++;
+            if(users[winner].score === data.gameConfig.maxScore){
+              this.gameEnd(allUsers)
+            }
+            topic = '';    
+            
+            
+            game.update({...data, users: users, currentTopic: topic }).then(v => this.newRound());          
+          }
+        )
 
-      let game = this.afs.collection('pictionary').doc(`${gameId}`)
-      game.get().subscribe(
-        val => {
-          let data = val.data();
-          let users = [...data.users];
-          let winner = (users.findIndex((user) => user.displayName === `${displayName}`));
-          let topic = data.currentTopic
-          users[winner].score++;
-
-          topic = '';
-
-
-          game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
-        }
-      )
     })
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
       let game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.get().subscribe(
         val => {
-
           let data = val.data()
           let oldArtist: Player = data.currentArtist as Player
           let nextArtist: Player;
           let users = [...data.users]
+          let allUsers = [...data.users, data.currentArtist]
           oldArtist.isArtist = false;
           if (!oldArtist['remove']) {
             users.push(oldArtist);
           }
           nextArtist = users.shift();
           nextArtist.isArtist = true;
-
-          game.update({ ...data, users: users, currentArtist: nextArtist }).then(v => this.clearBoard(true))
+          if(nextArtist.isHost){
+            data.gameConfig.currentRound++
+            if(data.gameConfig.currentRound > data.gameConfig.maxRounds){
+              data.gameConfig.currentRound--;
+              this.gameEnd(allUsers)
+            }
+          }
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig}).then(v => this.clearBoard(true))
         }
       )
     })
@@ -101,7 +110,14 @@ export class SocketService {
       })
       //add user to firestore with init score 0;
     })
-    this.socket.on('gameEnd', (gameId) => {
+    this.socket.on('gameEnd', (gameId, allUsers) => {
+      console.log(`Game in room ${gameId} has ended`);
+      allUsers.sort(function (a,b){
+        return b.score - a.score
+      })
+      let winner = allUsers.shift()
+      console.log(winner);
+      
       //check for user with highest score on firestore
       //do some kind of win functionality
       //delete entry from firebase at some point
@@ -158,69 +174,66 @@ canDraw(canDraw) {
       message.displayName = displayName;
       observer.next(message);
     });
-  });
-}
+  }
 
+  sendChat(msg: Message) {
+    this.socket.emit('newMessage', msg);
+  }
 
+  // State functionality
 
-sendChat(msg: Message) {
-  this.socket.emit('newMessage', msg);
-}
+  // Host updates artist and sets value in firestore, has to be host to update firestore initial artist can be host for now
 
-// State functionality
+  // Game functionality
+  // Set display name
+  updateDisplayName(displayName: string) {
+    this.socket.emit('displayName', displayName);
+  }
+  // Join game function
+  joinGame(displayName: string, gameId: string) {
+    this.playerStore.updatePlayer(displayName);
+    this.socket.emit('joinGame', displayName, gameId);
+  }
 
-// Host updates artist and sets value in firestore, has to be host to update firestore initial artist can be host for now
+  // Leave game function
+  leaveGame(displayName: string, gameId: string) {
+    this.socket.emit('leaveGame', displayName, gameId);
+  }
 
-// Game functionality
-// Set display name
-updateDisplayName(displayName: string) {
-  this.socket.emit('displayName', displayName);
-}
-// Join game function
-joinGame(displayName: string, gameId: string) {
-  this.playerStore.updatePlayer(displayName);
-  this.socket.emit('joinGame', displayName, gameId);
-}
+  // Create game function to setup host socket
 
-// Leave game function
-leaveGame(displayName: string, gameId: string) {
-  this.socket.emit('leaveGame', displayName, gameId);
-}
+  createGame(displayName, gameId) {
+    
+    this.playerStore.updatePlayer(displayName);
+    this.socket.emit('createGame', displayName, gameId);
+  }
 
-// Create game function to setup host socket
+  // Clear board for all players
+  clearBoard(clear) {
+    this.socket.emit('clearBoard', clear);
+  }
+  // Host updates points as necessary
+  win() {
 
-createGame(displayName, gameId) {
+    this.socket.emit('win');
+  }
+  // Probably won't be used
+  newRound() {
+    this.socket.emit('newRound');
+  }
 
-  this.playerStore.updatePlayer(displayName);
-  this.socket.emit('createGame', displayName, gameId);
-}
+  newTopic() {
 
-// Clear board for all players
-clearBoard(clear) {
-  this.socket.emit('clearBoard', clear);
-}
-// Host updates points as necessary
-win() {
+    this.socket.emit('newTopic');
+  }
+  // Triggered on round win for now, add timer later and work with that too
+  gameEnd(allUsers: Array<Object>){
+    this.socket.emit('gameEnd', allUsers)
+  }
 
-  this.socket.emit('win');
-}
-// Probably won't be used
-newRound() {
-  this.socket.emit('newRound');
-}
-
-newTopic() {
-
-  this.socket.emit('newTopic');
-}
-
-// Triggered on round win for now, add timer later and work with that too
 startTimer(time){
   this.socket.emit('startTimer', time);
 }
-
-
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room
-
 }
