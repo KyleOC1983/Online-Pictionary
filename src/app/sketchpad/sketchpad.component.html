@@ -2,6 +2,6 @@
     <canvas id="cv" (mousedown)="startDraw()" (mousemove)="draw($event)" (mouseup)="endDraw()"
         (mouseleave)="endDraw()"></canvas>
     <div class="buttonDiv">
-        <button mat-raised-button color="warn" (click)="clearDrawing()">Clear Drawing</button>
+        <button *ngIf="myDraw" mat-raised-button color="warn" (click)="clearDrawing()">Clear Drawing</button>
     </div>
 </div>

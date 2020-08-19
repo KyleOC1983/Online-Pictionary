@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Project, Path, Point } from 'paper'; 
 import * as paper from 'paper';
 import { SocketService } from '../services/socket.service';
+import { ActivatedRoute } from '@angular/router';
+import { DisplaynamestoreService } from '../services/displaynamestore.service';
+import { GameService } from '../services/game.service';
+
 
 @Component({
   selector: 'app-sketchpad',
@@ -13,12 +17,14 @@ export class SketchpadComponent implements OnInit {
   
   myPath: any;
   project1: any;
-  myDraw: boolean = true;
+  myDraw: boolean;
   canDraw: boolean;
   artistPath: any;
+  currentGame;
+  currentPlayer;
 
 
-  constructor(private socket: SocketService) { }
+  constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
 
   startDraw(){
     this.myPath = new Path();
@@ -71,6 +77,21 @@ export class SketchpadComponent implements OnInit {
     })
     this.socket.clearDraw$.subscribe(clear =>{
       this.clearBoard(clear);
+    })
+    this.currentGame = this.actr.snapshot.params.gameId;
+    this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
+    console.log(this.currentPlayer);
+    this.currentGame = this.actr.snapshot.params.gameId;
+    this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
+      console.log(val);
+      console.log(val.currentArtist.displayName);
+      if(this.currentPlayer == val.currentArtist.displayName){
+        console.log('is artist')
+        this.myDraw = true;
+      } else{
+        console.log('not artist')
+        this.myDraw = false;
+      }
     })
   }
 
