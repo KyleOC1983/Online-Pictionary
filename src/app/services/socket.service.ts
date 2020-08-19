@@ -215,8 +215,8 @@ newTopic() {
 }
 
 // Triggered on round win for now, add timer later and work with that too
-startTimer(){
-  this.socket.emit('startTimer');
+startTimer(time){
+  this.socket.emit('startTimer', time);
 }
 
 

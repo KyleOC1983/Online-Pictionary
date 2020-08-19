@@ -5,7 +5,7 @@ import { GameService } from '../services/game.service';
 import { GameInfo } from '../interfaces/gameInfo.interface';
 import { HostStoreService } from '../services/host.store.service';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 
 @Component({
@@ -46,17 +46,22 @@ export class GameComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.socket.startTimer$.subscribe(val =>{
       let sub = interval(1000)
+      let subRef: Subscription
       if(val == true){
         
-        sub.subscribe(v=>{
+        subRef = sub.subscribe(v=>{
           this.timer = 60-v;
           
           if(this.timer == 0){
-            sub.unsubscribe()
+            subRef.unsubscribe()
             this.timer = 60
           }
         })
       }
+          else{
+            subRef.unsubscribe()
+            this.timer = 60;
+          }
     })
 
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
@@ -93,7 +98,8 @@ export class GameComponent implements OnInit, OnDestroy{
   }
 
   startCountdown() {
-    this.socket.startTimer();
+    this.socket.startTimer(true);
+
     
   }
 
