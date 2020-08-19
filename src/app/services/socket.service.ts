@@ -19,22 +19,22 @@ export class SocketService {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
-        
-        let game = this.afs.collection('pictionary').doc(`${gameId}`)
-        game.get().subscribe(
-          val => {
-            let data = val.data();
-            let users = [...data.users];
-            let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
-            let topic = data.currentTopic
-            users[winner].score++;
-            console.log(users[winner]);
-            topic = '';    
-            console.log(topic);
-            
-            game.update({...data, users: users, currentTopic: topic }).then(v => this.newRound());          
-          }
-        )
+
+      let game = this.afs.collection('pictionary').doc(`${gameId}`)
+      game.get().subscribe(
+        val => {
+          let data = val.data();
+          let users = [...data.users];
+          let winner = (users.findIndex((user) => user.displayName === `${displayName}`));
+          let topic = data.currentTopic
+          users[winner].score++;
+          console.log(users[winner]);
+          topic = '';
+          console.log(topic);
+
+          game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+        }
+      )
     })
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
@@ -57,18 +57,34 @@ export class SocketService {
     })
     this.socket.on('newTopic', (gameId) => {
       console.log(gameId);
-      
+
       let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       console.log(randomTopic);
-      
+
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
       });
       //select new topic, update firestore with new topic
     })
     this.socket.on('leaveGame', (displayName, gameId) => {
-      //remove user from firestore
+      let game = this.afs.collection('pictionary').doc(`${gameId}`)
+      game.get().subscribe(
+        val => {
+          let data = val.data();
+          let artist = data.currentArtist
+          let users = [...data.users];
+          let idx = (users.findIndex((user) => user.displayName === `${displayName}`));
+          if(artist.displayName === `${displayName}`){
+            this.newRound()
+          }
+          else{
+          game.update({
+            users: firebase.firestore.FieldValue.arrayRemove(users[idx])
+          })
+          console.log(game);
+        }
     })
+  })
     this.socket.on('joinGame', (displayName, gameId) => {
 
       let newPlayer: Player = {
@@ -79,7 +95,7 @@ export class SocketService {
       }
 
       console.log(newPlayer);
-     
+
       const game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.update({
         users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
@@ -158,8 +174,8 @@ export class SocketService {
   }
 
   // Leave game function
-  leaveGame() {
-    this.socket.emit('leaveGame');
+  leaveGame(displayName: string, gameId: string) {
+    this.socket.emit('leaveGame', displayName, gameId);
   }
 
   // Create game function to setup host socket
@@ -177,7 +193,7 @@ export class SocketService {
   // Host updates points as necessary
   win() {
     console.log("win socket fn hit");
-    
+
     this.socket.emit('win');
   }
   // Probably won't be used
@@ -187,7 +203,7 @@ export class SocketService {
 
   newTopic() {
     console.log("function hit");
-    
+
     this.socket.emit('newTopic');
   }
   // Triggered on round win for now, add timer later and work with that too

@@ -67,7 +67,8 @@ export class GameService {
   }
 
   // Leave game function
-  leaveGame() {
+  leaveGame(displayName: string, gameId: string) {
+    this.socketService.leaveGame(displayName, gameId)
     this.router.navigate(["/home"])
   }
 

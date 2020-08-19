@@ -34,6 +34,9 @@ export class GameComponent implements OnInit, OnDestroy{
   //   this.gameService.updateArtist(this.currentGame)
   // }
 
+  leaveGame(){
+    this.gameService.leaveGame(this.displayName, this.currentGame)
+  }
   newTopic(){
 
     this.gameService.newTopic();
@@ -74,7 +77,7 @@ export class GameComponent implements OnInit, OnDestroy{
 
 
   ngOnDestroy(): void{
-    this.socket.leaveGame();
+    this.socket.leaveGame(this.displayName, this.currentGame);
   }
 
 }
