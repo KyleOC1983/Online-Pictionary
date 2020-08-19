@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,13 @@ export class SocketService {
           val => {
             let data = val.data();
             let users = [...data.users];
+            let allUsers = [...data.users, data.currentArtist]
             let winner = (users.findIndex((user) => user.displayName === `${displayName}`));            
             let topic = data.currentTopic
             users[winner].score++;
-            
+            if(users[winner].score === data.gameConfig.maxScore){
+              this.gameEnd(allUsers)
+            }
             topic = '';    
             
             
@@ -41,19 +45,25 @@ export class SocketService {
       let game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.get().subscribe(
         val => {
-
           let data = val.data()
           let oldArtist: Player = data.currentArtist as Player
           let nextArtist: Player;
           let users = [...data.users]
+          let allUsers = [...data.users, data.currentArtist]
           oldArtist.isArtist = false;
           if(!oldArtist['remove']){
           users.push(oldArtist);
           }
           nextArtist = users.shift();
           nextArtist.isArtist = true;
-
-          game.update({ ...data, users: users, currentArtist: nextArtist }).then(v => this.clearBoard(true))
+          if(nextArtist.isHost){
+            data.gameConfig.currentRound++
+            if(data.gameConfig.currentRound > data.gameConfig.maxRounds){
+              data.gameConfig.currentRound--;
+              this.gameEnd(allUsers)
+            }
+          }
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig}).then(v => this.clearBoard(true))
         }
       )
     })
@@ -99,7 +109,14 @@ export class SocketService {
       })
       //add user to firestore with init score 0;
     })
-    this.socket.on('gameEnd', (gameId) => {
+    this.socket.on('gameEnd', (gameId, allUsers) => {
+      console.log(`Game in room ${gameId} has ended`);
+      allUsers.sort(function (a,b){
+        return b.score - a.score
+      })
+      let winner = allUsers.shift()
+      console.log(winner);
+      
       //check for user with highest score on firestore
       //do some kind of win functionality
       //delete entry from firebase at some point
@@ -202,8 +219,9 @@ export class SocketService {
     this.socket.emit('newTopic');
   }
   // Triggered on round win for now, add timer later and work with that too
-
+  gameEnd(allUsers: Array<Object>){
+    this.socket.emit('gameEnd', allUsers)
+  }
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room
-
 }
