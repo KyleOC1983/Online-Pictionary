@@ -47,7 +47,9 @@ export class SocketService {
           let nextArtist: Player;
           let users = [...data.users]
           oldArtist.isArtist = false;
+          if(!oldArtist['remove']){
           users.push(oldArtist);
+          }
           nextArtist = users.shift();
           nextArtist.isArtist = true;
 
@@ -56,18 +58,31 @@ export class SocketService {
       )
     })
     this.socket.on('newTopic', (gameId) => {
-      
-      
-      let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
-      
+     let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
       });
       //select new topic, update firestore with new topic
     })
     this.socket.on('leaveGame', (displayName, gameId) => {
-      //remove user from firestore
+      let game = this.afs.collection('pictionary').doc(`${gameId}`)
+      game.get().subscribe(
+        val => {
+          let data = val.data();
+          let artist = data.currentArtist
+          let users = [...data.users];
+          let idx = (users.findIndex((user) => user.displayName === `${displayName}`));
+          if(artist.displayName === `${displayName}`){
+            game.update({currentArtist:{...artist, remove: true}}).then(v => this.newRound())
+          }
+          else{
+          game.update({
+            users: firebase.firestore.FieldValue.arrayRemove(users[idx])
+          })
+          console.log(game);
+        }
     })
+  })
     this.socket.on('joinGame', (displayName, gameId) => {
 
       let newPlayer: Player = {
@@ -77,7 +92,7 @@ export class SocketService {
         score: 0
       }
 
-     
+
       const game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.update({
         users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
@@ -156,8 +171,8 @@ export class SocketService {
   }
 
   // Leave game function
-  leaveGame() {
-    this.socket.emit('leaveGame');
+  leaveGame(displayName: string, gameId: string) {
+    this.socket.emit('leaveGame', displayName, gameId);
   }
 
   // Create game function to setup host socket
@@ -174,8 +189,7 @@ export class SocketService {
   }
   // Host updates points as necessary
   win() {
-    
-    
+
     this.socket.emit('win');
   }
   // Probably won't be used
@@ -184,7 +198,7 @@ export class SocketService {
   }
 
   newTopic() {
-    
+
     this.socket.emit('newTopic');
   }
   // Triggered on round win for now, add timer later and work with that too

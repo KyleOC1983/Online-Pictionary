@@ -15,9 +15,11 @@
 <ng-container *ngIf="savedName">
     <div class="container">
         <div class="stats-box container">
+
             <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} / {{gameInfo?.gameConfig.maxRounds}}</h2>
             <h2>ARTIST : {{gameInfo?.artist.displayName}} </h2>  
             <h2>TOPIC :<h2 *ngIf = "isArtist">{{gameInfo?.currentTopic}}</h2></h2>
+
             <h2>TIME :</h2>
         </div>
     </div>
@@ -27,5 +29,9 @@
         <app-sketchpad class="fb-20"></app-sketchpad>
         <app-scoreboard class="fb-20" [users]="gameInfo?.users" [artist]="gameInfo?.artist"></app-scoreboard>
     </div>
-    <button mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
+    <div class="container">
+        <button mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
+        <button mat-raised-button color="warn">CLOSE ROOM</button>
+        <button mat-raised-button routerLink="home" (click)="leaveGame()">LEAVE ROOM</button>
+    </div>
 </ng-container>
