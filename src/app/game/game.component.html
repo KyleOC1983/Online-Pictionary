@@ -18,8 +18,7 @@
 
             <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} / {{gameInfo?.gameConfig.maxRounds}}</h2>
             <h2>ARTIST : {{gameInfo?.artist.displayName}} </h2>  
-            <h2>TOPIC :<h2 *ngIf = "isArtist">{{gameInfo?.currentTopic}}</h2></h2>
-
+            <h2 *ngIf = "isArtist">TOPIC : {{gameInfo?.currentTopic}}</h2>
             <h2>TIME :</h2>
         </div>
     </div>
