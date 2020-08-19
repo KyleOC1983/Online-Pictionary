@@ -21,7 +21,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isHost: boolean
   currentPlayer;
   isArtist: boolean = false;
-  timer: number = 10;
+  timer: number = 60;
   subRef: Subscription;
 
   constructor(private socket: SocketService, private gameService: GameService, 
@@ -50,12 +50,12 @@ export class GameComponent implements OnInit, OnDestroy{
       if(val == true){
         
         this.subRef = sub.subscribe(v=>{
-          this.timer = 10-v;
+          this.timer = 60-v;
           
           if(this.timer == 0){
             
             this.subRef.unsubscribe();
-            this.timer = 10
+            this.timer = 60
             if(this.isHost){
               this.socket.newRound();
             }
@@ -64,7 +64,7 @@ export class GameComponent implements OnInit, OnDestroy{
       }
           else if(this.subRef && !val){
             this.subRef.unsubscribe()
-            this.timer = 10;
+            this.timer = 60;
           }
     })
 
