@@ -47,7 +47,9 @@ export class SocketService {
           let nextArtist: Player;
           let users = [...data.users]
           oldArtist.isArtist = false;
+          if(!oldArtist['remove']){
           users.push(oldArtist);
+          }
           nextArtist = users.shift();
           nextArtist.isArtist = true;
 
@@ -75,7 +77,7 @@ export class SocketService {
           let users = [...data.users];
           let idx = (users.findIndex((user) => user.displayName === `${displayName}`));
           if(artist.displayName === `${displayName}`){
-            this.newRound()
+            game.update({currentArtist:{...artist, remove: true}}).then(v => this.newRound())
           }
           else{
           game.update({
