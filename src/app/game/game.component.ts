@@ -41,7 +41,9 @@ export class GameComponent implements OnInit, OnDestroy{
   }
   newTopic(){
     this.gameService.newTopic();
+    if(this.timer == 60){
     this.startCountdown()
+    }
   }
 
   ngOnInit(): void {
