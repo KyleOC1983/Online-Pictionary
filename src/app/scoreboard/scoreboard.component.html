@@ -5,6 +5,6 @@
 <div class="scoreboard">
     <h2>LEADERBOARD</h2>
     <ol>
-        <li *ngFor='let u of allUsers'> <span> {{u?.displayName}} -</span> {{u?.score}} </li>
+        <li *ngFor="let u of allUsers | sortBy: 'desc':'score'"> <span> {{u?.displayName}} -</span> {{u?.score}} </li>
     </ol>
 </div>
