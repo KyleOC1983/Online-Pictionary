@@ -9,6 +9,7 @@ import { Player } from '../interfaces/player.interface';
 export class ScoreboardComponent implements OnChanges {
   @Input() users: Array<Player> = [];
   @Input() artist: Player;
+  @Input() winner: Player
   allUsers: Array<Player> = []
   constructor() { }
 

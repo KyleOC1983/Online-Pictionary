@@ -117,12 +117,13 @@ export class SocketService {
         return b.score - a.score
       })
       let winner = allUsers.shift()
-      console.log(winner);
+      this.sendWinner(winner)
 
       //check for user with highest score on firestore
       //do some kind of win functionality
       //delete entry from firebase at some point
     })
+
 
   }
 
@@ -179,6 +180,16 @@ export class SocketService {
   }
   sendChat(msg: Message) {
     this.socket.emit('newMessage', msg);
+  }
+  public get winner$() {
+    return Observable.create((observer) => {
+      this.socket.on('winner', (winner) => {
+        observer.next(winner);
+      });
+    })
+  }
+  sendWinner(winner){
+    this.socket.emit('winner', winner);
   }
 
   // State functionality

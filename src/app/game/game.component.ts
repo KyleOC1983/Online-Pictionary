@@ -6,6 +6,7 @@ import { GameInfo } from '../interfaces/gameInfo.interface';
 import { HostStoreService } from '../services/host.store.service';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
 import { interval, Subscription } from 'rxjs';
+import { Player } from '../interfaces/player.interface';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isArtist: boolean = false;
   timer: number = 60;
   subRef: Subscription;
+  winner: Player;
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
@@ -94,6 +96,7 @@ export class GameComponent implements OnInit, OnDestroy{
     if(this.isHost === true){
       this.savedName = true
     } 
+    this.socket.winner$.subscribe(val => this.winner = val)
   }
 
 
