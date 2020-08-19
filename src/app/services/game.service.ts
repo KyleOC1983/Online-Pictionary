@@ -30,7 +30,7 @@ export class GameService {
     let add_hours = function (dt, minutes) {
       return new Date(dt.getTime() + minutes * 3600000);
     }
-    let validGameUntilTime = (add_hours(new Date(), 2).toString());
+    let validGameUntilTime = new Date((add_hours(new Date(), 2).toString()));
     // End
     let createdTime = new Date();
 
