@@ -59,7 +59,7 @@ export class GameComponent implements OnInit, OnDestroy{
           }
         })
       }
-          else{
+          else if(subRef && !val){
             subRef.unsubscribe()
             this.timer = 10;
           }
