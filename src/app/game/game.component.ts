@@ -5,6 +5,7 @@ import { GameService } from '../services/game.service';
 import { GameInfo } from '../interfaces/gameInfo.interface';
 import { HostStoreService } from '../services/host.store.service';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
+import { interval, Subscription } from 'rxjs';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isHost: boolean
   currentPlayer;
   isArtist: boolean = false;
-  
+  timer: number = 60;
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
@@ -38,11 +39,31 @@ export class GameComponent implements OnInit, OnDestroy{
     this.gameService.leaveGame(this.displayName, this.currentGame)
   }
   newTopic(){
-
     this.gameService.newTopic();
+    this.startCountdown()
   }
 
   ngOnInit(): void {
+    this.socket.startTimer$.subscribe(val =>{
+      let sub = interval(1000)
+      let subRef: Subscription
+      if(val == true){
+        
+        subRef = sub.subscribe(v=>{
+          this.timer = 60-v;
+          
+          if(this.timer == 0){
+            subRef.unsubscribe()
+            this.timer = 60
+          }
+        })
+      }
+          else{
+            subRef.unsubscribe()
+            this.timer = 60;
+          }
+    })
+
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
     
     this.currentGame = this.actr.snapshot.params.gameId;
@@ -74,6 +95,12 @@ export class GameComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void{
     this.socket.leaveGame(this.displayName, this.currentGame);
+  }
+
+  startCountdown() {
+    this.socket.startTimer(true);
+
+    
   }
 
 }

@@ -57,6 +57,9 @@ module.exports.listen = (server) => {
         socket.on('clearBoard', (clear)=>{
             io.to(socket.gameRoom).emit('clearBoard', clear);
         })
+        socket.on('startTimer', (time)=>{
+            io.to(socket.gameRoom).emit('startTimer', time);
+        })
     })
     return io;
 }
