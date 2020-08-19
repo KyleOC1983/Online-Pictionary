@@ -3,6 +3,7 @@ module.exports.listen = (server) => {
     io = socketio(server);
     io.on('connect', (socket) => {
         socket.on('disconnect', () => {
+            socket.to('host' + socket.gameRoom).emit('leaveGame', socket.displayName, socket.gameRoom)
             
         })
         socket.on('displayName', (displayName) => {
@@ -42,8 +43,8 @@ module.exports.listen = (server) => {
             io.to('host' + socket.gameRoom).emit('win', socket.displayName, socket.gameRoom);
             
         })
-        socket.on('gameEnd', () => {
-            io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom);
+        socket.on('gameEnd', (allUsers) => {
+            io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom, allUsers);
         })
         socket.on('createGame', (displayName, gameId)=>{
             socket.gameRoom = gameId;
