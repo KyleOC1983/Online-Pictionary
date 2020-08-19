@@ -112,7 +112,6 @@ export class SocketService {
       //add user to firestore with init score 0;
     })
     this.socket.on('gameEnd', (gameId, allUsers) => {
-      console.log(`Game in room ${gameId} has ended`);
       allUsers.sort(function (a, b) {
         return b.score - a.score
       })
@@ -240,6 +239,8 @@ export class SocketService {
   }
   // Triggered on round win for now, add timer later and work with that too
   gameEnd(allUsers: Array<Object>) {
+    console.log('game end function');
+    
     this.socket.emit('gameEnd', allUsers)
   }
 

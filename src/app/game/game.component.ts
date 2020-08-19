@@ -96,7 +96,8 @@ export class GameComponent implements OnInit, OnDestroy{
     if(this.isHost === true){
       this.savedName = true
     } 
-    this.socket.winner$.subscribe(val => this.winner = val)
+    this.socket.winner$.subscribe(val => {
+      this.winner = val})
   }
 
 
