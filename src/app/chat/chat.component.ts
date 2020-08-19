@@ -6,8 +6,8 @@ import { take } from 'rxjs/operators';
 import { SocketService } from '../services/socket.service';
 import { GameService } from '../services/game.service';
 import { ActivatedRoute } from '@angular/router';
-import { Player } from '../interfaces/player.interface';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
+import { GameInfo } from '../interfaces/gameInfo.interface';
 
 @Component({
   selector: 'app-chat',
@@ -16,13 +16,15 @@ import { DisplaynamestoreService } from '../services/displaynamestore.service';
 })
 export class ChatComponent implements OnInit {
   @ViewChild('output') private chatOutput: ElementRef;
+  gameInfo: GameInfo
   messages: Array<Message> = [];
   messageText: string = '';
   displayName: string = '';
   answer: string = '';
   currentGame: string;
   player: string;
-  isArtist: boolean;
+  isArtist: boolean = false;
+  currentPlayer;
 
 
   constructor(private socketService: SocketService, private _snackBar: MatSnackBar,
@@ -69,9 +71,20 @@ export class ChatComponent implements OnInit {
     });
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.getTopic(this.currentGame).subscribe(val => (this.answer = val.currentTopic))
-    this.displayNameStore.player$.subscribe(val => {
-      this.player = val
-    });
+    this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
+    console.log(this.currentPlayer);
+    this.currentGame = this.actr.snapshot.params.gameId;
+    this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
+      console.log(val);
+      console.log(val.currentArtist.displayName);
+      if(this.currentPlayer == val.currentArtist.displayName){
+        console.log('is artist')
+        this.isArtist = true;
+      } else{
+        console.log('not artist')
+        this.isArtist = false;
+      }
+    })
   }
 
 }
