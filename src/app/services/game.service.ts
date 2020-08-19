@@ -34,8 +34,8 @@ export class GameService {
     // End
     let createdTime = new Date();
 
-    this.socketService.createGame(this.gameId);
-    this.socketService.joinGame(host.displayName, this.gameId)
+    this.socketService.createGame(host.displayName, this.gameId);
+    
     console.log(this.gameId);
 
     this.FS.collection('pictionary').doc(`${this.gameId}`).set({

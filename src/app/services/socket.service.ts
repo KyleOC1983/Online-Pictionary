@@ -77,7 +77,9 @@ export class SocketService {
         isHost: false,
         score: 0
       }
-      this.playerStore.updatePlayer(newPlayer);
+
+      console.log(newPlayer);
+     
       const game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.update({
         users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
@@ -151,6 +153,7 @@ export class SocketService {
   }
   // Join game function
   joinGame(displayName: string, gameId: string) {
+    this.playerStore.updatePlayer(displayName);
     this.socket.emit('joinGame', displayName, gameId);
   }
 
@@ -161,9 +164,10 @@ export class SocketService {
 
   // Create game function to setup host socket
 
-  createGame(gameId) {
+  createGame(displayName, gameId) {
     console.log('creating game');
-    this.socket.emit('createGame', gameId);
+    this.playerStore.updatePlayer(displayName);
+    this.socket.emit('createGame', displayName, gameId);
   }
 
   // Clear board for all players

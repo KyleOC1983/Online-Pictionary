@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit {
   displayName: string = '';
   answer: string = '';
   currentGame: string;
-  player: Player
+  player: string;
   isArtist: boolean;
 
 

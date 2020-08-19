@@ -48,7 +48,10 @@ module.exports.listen = (server) => {
         socket.on('gameEnd', () => {
             io.to('host' + socket.gameRoom).emit('gameEnd', socket.gameRoom);
         })
-        socket.on('createGame', (gameId)=>{
+        socket.on('createGame', (displayName, gameId)=>{
+            socket.gameRoom = gameId;
+            socket.displayName = displayName;
+            socket.join(gameId);
             console.log('joining host game');
             socket.join('host' + gameId);
             console.log('joined ' + gameId)
