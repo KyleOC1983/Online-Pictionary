@@ -43,6 +43,8 @@ export class SocketService {
     })
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
+      console.log('new round')
+      this.startTimer(false);
       let game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.get().subscribe(
         val => {

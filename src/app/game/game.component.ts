@@ -21,7 +21,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isHost: boolean
   currentPlayer;
   isArtist: boolean = false;
-  timer: number = 60;
+  timer: number = 10;
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
@@ -50,17 +50,18 @@ export class GameComponent implements OnInit, OnDestroy{
       if(val == true){
         
         subRef = sub.subscribe(v=>{
-          this.timer = 60-v;
+          this.timer = 10-v;
           
           if(this.timer == 0){
-            subRef.unsubscribe()
-            this.timer = 60
+            this.socket.newRound();
+            subRef.unsubscribe();
+            this.timer = 10
           }
         })
       }
           else{
             subRef.unsubscribe()
-            this.timer = 60;
+            this.timer = 10;
           }
     })
 
