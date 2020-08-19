@@ -39,20 +39,27 @@ h2 {
 }
 
 .btnDiv {
-    position: relative;
-    bottom: 36px;
+    position: sticky;
+    bottom: 23px;
 }
 
-.room-btn {
-  position: relative;
-  left: 410px;
-  margin-left: 5px;
+.leave-btn {
+    right: 140px;
+}
+
+.close-btn {
+    right: 265px;
 }
 
 .topic-btn {
-    position: relative;
-    right: 6px;
+    right: 125px;
 }
+
+.absolute {
+    position: absolute;
+}
+
+
 
 
 
