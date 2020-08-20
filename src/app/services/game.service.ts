@@ -73,7 +73,7 @@ export class GameService {
   // Close room funtion
   closeRoom(gameId) {
     this.socketService.roomClosed()
-    this.FS.collection('pictionary').doc(gameId).delete();
+    this.FS.collection('pictionary').doc(`${gameId}`).delete();
   }
 
   gameInfo(gameId) {
