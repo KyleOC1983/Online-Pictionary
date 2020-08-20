@@ -31,12 +31,14 @@ export class SocketService {
           let topic = data.currentTopic
           users[winner].score++;
           if (users[winner].score === data.gameConfig.maxScore) {
+            console.log(allUsers, 'end users');
             this.gameEnd(allUsers)
+            game.update({ ...data, users: users})
           }
-          topic = '';
-
-
-          game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+          else {
+            topic = '';
+            game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+          }
         }
       )
 
@@ -60,12 +62,15 @@ export class SocketService {
           nextArtist.isArtist = true;
           if (nextArtist.isHost) {
             data.gameConfig.currentRound++
-            if (data.gameConfig.currentRound > data.gameConfig.maxRounds) {
-              data.gameConfig.currentRound--;
-              this.gameEnd(allUsers)
-            }
           }
-          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+          if (data.gameConfig.currentRound > data.gameConfig.maxRounds) {
+            data.gameConfig.currentRound--;
+            game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+            this.gameEnd(allUsers)
+          }
+          else {
+            game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+          }
         }
       )
     })
@@ -109,21 +114,15 @@ export class SocketService {
       game.update({
         users: firebase.firestore.FieldValue.arrayUnion(newPlayer)
       })
-      //add user to firestore with init score 0;
     })
-    this.socket.on('gameEnd', (gameId, allUsers) => {
+    
+    this.socket.on('gameEnd', (allUsers: Array<Player>) => {
       allUsers.sort(function (a, b) {
         return b.score - a.score
       })
       let winner = allUsers.shift()
       this.sendWinner(winner)
-
-      //check for user with highest score on firestore
-      //do some kind of win functionality
-      //delete entry from firebase at some point
     })
-
-
   }
 
   public get startTimer$() {
@@ -187,7 +186,7 @@ export class SocketService {
       });
     })
   }
-  sendWinner(winner){
+  sendWinner(winner) {
     this.socket.emit('winner', winner);
   }
 
@@ -239,8 +238,6 @@ export class SocketService {
   }
   // Triggered on round win for now, add timer later and work with that too
   gameEnd(allUsers: Array<Object>) {
-    console.log('game end function');
-    
     this.socket.emit('gameEnd', allUsers)
   }
 
