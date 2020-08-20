@@ -1,5 +1,5 @@
 <div class="win-box">
-    <h2>FILLER WIN BOX</h2>
+    <h2 *ngIf="winner != null">{{winner.displayName}} won with {{winner.score}} points! </h2>
 </div>
 
 <div class="scoreboard">

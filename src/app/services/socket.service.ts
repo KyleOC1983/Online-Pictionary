@@ -10,12 +10,14 @@ import { DisplaynamestoreService } from './displaynamestore.service';
 import { Router } from '@angular/router';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
 
   socket: any;
+  
 
 
   constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService, private router: Router) {
@@ -39,6 +41,7 @@ export class SocketService {
 
 
           game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+          
         }
       )
 
@@ -67,7 +70,12 @@ export class SocketService {
               this.gameEnd(allUsers)
             }
           }
-          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig }).then(v => this.clearBoard(true))
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+          let newMsg: Message = {
+            displayName: 'System', 
+            body: `New Artist is ${nextArtist.displayName}. New Drawing Imminent`};
+          this.sendChat(newMsg);
+          
         }
       )
     })
@@ -75,7 +83,7 @@ export class SocketService {
       let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
-      });
+      }).then(v => this.clearBoard(true));
       //select new topic, update firestore with new topic
     })
     this.socket.on('leaveGame', (displayName, gameId) => {
@@ -114,12 +122,11 @@ export class SocketService {
       //add user to firestore with init score 0;
     })
     this.socket.on('gameEnd', (gameId, allUsers) => {
-      console.log(`Game in room ${gameId} has ended`);
       allUsers.sort(function (a, b) {
         return b.score - a.score
       })
       let winner = allUsers.shift()
-      console.log(winner);
+      this.sendWinner(winner)
 
       //check for user with highest score on firestore
       //do some kind of win functionality
@@ -130,6 +137,7 @@ export class SocketService {
       
 
     })
+
 
   }
 
@@ -178,14 +186,23 @@ export class SocketService {
   //  Chat observable and functionality
   public get chatMessage$() {
     return Observable.create((observer) => {
-      this.socket.on('newMessage', (message, displayName) => {
-        message.displayName = displayName;
+      this.socket.on('newMessage', (message) => {
         observer.next(message);
       });
     })
   }
   sendChat(msg: Message) {
     this.socket.emit('newMessage', msg);
+  }
+  public get winner$() {
+    return Observable.create((observer) => {
+      this.socket.on('winner', (winner) => {
+        observer.next(winner);
+      });
+    })
+  }
+  sendWinner(winner){
+    this.socket.emit('winner', winner);
   }
 
   // State functionality
@@ -236,6 +253,8 @@ export class SocketService {
   }
   // Triggered on round win for now, add timer later and work with that too
   gameEnd(allUsers: Array<Object>) {
+    console.log('game end function');
+    
     this.socket.emit('gameEnd', allUsers)
   }
 
