@@ -22,7 +22,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isHost: boolean
   currentPlayer;
   isArtist: boolean = false;
-  timer: number = 59;
+  timer: number = 60;
   subRef: Subscription;
   winner: Player;
 
@@ -43,6 +43,7 @@ export class GameComponent implements OnInit, OnDestroy{
   newTopic(){
     this.gameService.newTopic();
     if(this.timer == 60){
+      this.timer = 59;
     this.startCountdown()
     }
   }
