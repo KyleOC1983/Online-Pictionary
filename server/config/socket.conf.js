@@ -60,6 +60,10 @@ module.exports.listen = (server) => {
         socket.on('startTimer', (time)=>{
             io.to(socket.gameRoom).emit('startTimer', time);
         })
+        socket.on('roomClosed', (closed)=>{
+            io.to(socket.gameRoom).emit('roomClosed', closed);
+        })
+
     })
     return io;
 }

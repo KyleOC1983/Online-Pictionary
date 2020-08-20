@@ -123,6 +123,11 @@ export class SocketService {
       //do some kind of win functionality
       //delete entry from firebase at some point
     })
+    this.socket.on('roomClosed', (gameId, allUsers) =>{
+      
+      
+
+    })
 
   }
 
@@ -234,6 +239,10 @@ export class SocketService {
 
   startTimer(time) {
     this.socket.emit('startTimer', time);
+  }
+
+  roomClosed(allUsers: Array<Object>, gameId){
+    this.socket.emit('roomClosed', allUsers, gameId,)
   }
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room

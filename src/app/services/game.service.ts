@@ -70,6 +70,12 @@ export class GameService {
     this.socketService.leaveGame(displayName, gameId)
     this.router.navigate(["/home"])
   }
+  // Close room funtion
+  closeRoom(users, gameId) {
+    this.socketService.roomClosed(users, gameId)
+    this.router.navigate(["/home"])
+    this.FS.collection('pictionary').doc(gameId).delete();
+  }
 
   gameInfo(gameId) {
     let game = this.FS.collection('pictionary').doc(`${gameId}`)
