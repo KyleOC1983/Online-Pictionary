@@ -171,8 +171,7 @@ export class SocketService {
   //  Chat observable and functionality
   public get chatMessage$() {
     return Observable.create((observer) => {
-      this.socket.on('newMessage', (message, displayName) => {
-        message.displayName = displayName;
+      this.socket.on('newMessage', (message) => {
         observer.next(message);
       });
     })
