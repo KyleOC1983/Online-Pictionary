@@ -22,7 +22,7 @@ module.exports.listen = (server) => {
             socket.rooms = {};
         })
         socket.on('newMessage', (msg) => {
-            io.to(socket.gameRoom).emit('newMessage', msg, socket.displayName);
+            io.to(socket.gameRoom).emit('newMessage', msg);
         })
         socket.on('draw', (draw) => {
             
