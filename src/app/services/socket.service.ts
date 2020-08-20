@@ -126,7 +126,7 @@ export class SocketService {
       //delete entry from firebase at some point
     })
     this.socket.on('roomClosed', () =>{
-      this.route.navigate(["/home"])
+      this.router.navigate(["/home"])
       
 
     })
