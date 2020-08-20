@@ -8,6 +8,7 @@ import { GameService } from '../services/game.service';
 import { ActivatedRoute } from '@angular/router';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
 import { GameInfo } from '../interfaces/gameInfo.interface';
+import { Player } from '../interfaces/player.interface';
 
 @Component({
   selector: 'app-chat',
@@ -23,7 +24,9 @@ export class ChatComponent implements OnInit {
   currentGame: string;
   player: string;
   isArtist: boolean = false;
+  winner: Player;
   currentPlayer: string;
+
 
 
   constructor(private socketService: SocketService, private _snackBar: MatSnackBar,
@@ -31,7 +34,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280) {
-      if (this.messageText.toLowerCase().includes(this.answer.toLowerCase())) {
+      if (this.messageText.toLowerCase().includes(this.answer.toLowerCase()) && !this.winner) {
         this.socketService.win()
         this._snackBar.open('That is correct!', 'OK', {
           duration: 2000
@@ -84,6 +87,7 @@ export class ChatComponent implements OnInit {
         this.isArtist = false;
       }
     })
+    this.socketService.winner$.subscribe(val => {this.winner = val;})  
   }
 
 }

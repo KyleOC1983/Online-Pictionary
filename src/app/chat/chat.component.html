@@ -8,7 +8,7 @@
   <mat-form-field class="input-box">
     <mat-label>Message</mat-label>
     <textarea matInput
-              [disabled]="isArtist"
+              [disabled]="isArtist && !winner"
               [(ngModel)]="messageText"
               placeholder="Enter a new message..."
               cdkTextareaAutosize
