@@ -13,6 +13,7 @@ module.exports.listen = (server) => {
             socket.displayName = displayName
             socket.join(gameId, ()=>{
                 socket.to('host' + socket.gameRoom).emit('joinGame', socket.displayName, socket.gameRoom);
+                socket.emit('userColor', randomColor());
             });
             
         })
@@ -21,8 +22,8 @@ module.exports.listen = (server) => {
             socket.gameRoom = null;
             socket.rooms = {};
         })
-        socket.on('newMessage', (msg) => {
-            io.to(socket.gameRoom).emit('newMessage', msg);
+        socket.on('newMessage', (data) => {
+            io.to(socket.gameRoom).emit('newMessage', data);
         })
         socket.on('draw', (draw) => {
             
@@ -68,4 +69,9 @@ module.exports.listen = (server) => {
 
     })
     return io;
+}
+
+const colors = require("./colors")
+function randomColor(){
+    return colors[Math.floor(Math.random() * colors.length)]
 }
