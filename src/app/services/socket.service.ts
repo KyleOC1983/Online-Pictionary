@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class SocketService {
-
+  userColor: string = ''
   socket: any;
   
 
@@ -47,6 +47,11 @@ export class SocketService {
       )
 
     })
+
+    this.userColor$.subscribe(color=>{
+      this.userColor = color;
+    });
+
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
       console.log('new round')
@@ -152,6 +157,14 @@ export class SocketService {
     })
   }
 
+  public get userColor$() {
+    return Observable.create((observer) => {
+      this.socket.on('userColor', (color) => {
+        observer.next(color);
+      })
+    })
+  }
+
   sendSketch(draw) {
     this.socket.emit('draw', draw);
 
@@ -187,7 +200,11 @@ export class SocketService {
     })
   }
   sendChat(msg: Message) {
-    this.socket.emit('newMessage', msg);
+    let color = this.userColor
+    if(msg.displayName === 'System'){
+      color = 'white'
+    }
+    this.socket.emit('newMessage', {msg: msg, color: color});
   }
   public get winner$() {
     return Observable.create((observer) => {
