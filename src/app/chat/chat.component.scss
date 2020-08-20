@@ -29,3 +29,9 @@
 span {
     margin-top: 5px;
 }
+
+@media only screen and (max-width: 885px){
+    .output-box{
+        height: 250px;
+    }
+}

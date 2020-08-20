@@ -59,7 +59,18 @@ h2 {
     position: absolute;
 }
 
-
+@media only screen and (max-width: 885px) {
+    .chat {
+      order: 2;
+    }
+    .sketch {
+        order: 1;
+    }
+    .scoreboard {
+        order: 3;
+        flex-basis: 40%; 
+    }
+  }
 
 
 
