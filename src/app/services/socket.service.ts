@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Message } from '../interfaces/message.interface';
@@ -8,12 +8,14 @@ import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
 
   socket: any;
+  
 
 
   constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService) {
@@ -37,6 +39,7 @@ export class SocketService {
 
 
           game.update({ ...data, users: users, currentTopic: topic }).then(v => this.newRound());
+          
         }
       )
 
@@ -66,6 +69,11 @@ export class SocketService {
             }
           }
           game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+          let newMsg: Message = {
+            displayName: 'System', 
+            body: `New Artist is ${nextArtist.displayName}. New Drawing Imminent`};
+          this.sendChat(newMsg);
+          
         }
       )
     })
