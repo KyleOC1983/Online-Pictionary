@@ -19,7 +19,6 @@ export class ChatComponent implements OnInit {
   gameInfo: GameInfo
   messages: Array<Message> = [];
   messageText: string = '';
-  displayName: string = '';
   answer: string = '';
   currentGame: string;
   player: string;
@@ -34,12 +33,15 @@ export class ChatComponent implements OnInit {
     if (this.messageText.length > 0 && this.messageText.length <= 280) {
       if (this.messageText.toLowerCase().includes(this.answer.toLowerCase())) {
         this.socketService.win()
-        this._snackBar.open('That is correct!', 'OK', {
-          duration: 2000
-        });
+        let msg: Message = {
+          displayName: "System",
+          body: this.messageText
+        }
+        this.socketService.sendChat(msg);
+        this.messageText = `${this.currentPlayer} has won the round! The answer was ${this.answer}`;
       }
       let msg: Message = {
-        displayName: this.displayName,
+        displayName: this.currentPlayer,
         body: this.messageText
       }
       this.socketService.sendChat(msg);
@@ -70,18 +72,18 @@ export class ChatComponent implements OnInit {
       setTimeout(this.chatScroll.bind(this), 50)
     });
     this.currentGame = this.actr.snapshot.params.gameId;
-    this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
-    
+    this.displayNameStore.player$.subscribe(val => this.currentPlayer = val)
+
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-    
+
       this.answer = val.currentTopic;
-    
-      if(this.currentPlayer == val.currentArtist.displayName){
-    
+
+      if (this.currentPlayer == val.currentArtist.displayName) {
+
         this.isArtist = true;
-      } else{
-    
+      } else {
+
         this.isArtist = false;
       }
     })
