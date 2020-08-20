@@ -22,6 +22,7 @@ export class SketchpadComponent implements OnInit {
   artistPath: any;
   currentGame;
   currentPlayer;
+  topic: string;
 
 
   constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
@@ -80,14 +81,11 @@ export class SketchpadComponent implements OnInit {
     })
     this.currentGame = this.actr.snapshot.params.gameId;
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
-    
-    this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      if(this.currentPlayer == val.currentArtist.displayName){
-        
+      this.topic = val.currentTopic
+      if(this.currentPlayer == val.currentArtist.displayName && this.topic != ''){
         this.myDraw = true;
       } else{
-        
         this.myDraw = false;
       }
     })
