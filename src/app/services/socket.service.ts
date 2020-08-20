@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
+import { Route } from '@angular/compiler/src/core';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SocketService {
   socket: any;
 
 
-  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService) {
+  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService, router: Route) {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
@@ -123,8 +124,8 @@ export class SocketService {
       //do some kind of win functionality
       //delete entry from firebase at some point
     })
-    this.socket.on('roomClosed', (gameId, allUsers) =>{
-      
+    this.socket.on('roomClosed', () =>{
+      this.router.navigate(["/home"])
       
 
     })
@@ -241,8 +242,8 @@ export class SocketService {
     this.socket.emit('startTimer', time);
   }
 
-  roomClosed(allUsers: Array<Object>, gameId){
-    this.socket.emit('roomClosed', allUsers, gameId,)
+  roomClosed() {
+    this.socket.emit('roomClosed')
   }
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room
