@@ -7,7 +7,8 @@ import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
-import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class SocketService {
   socket: any;
 
 
-  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService, router: Route) {
+  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService, private router: Router) {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
@@ -125,7 +126,7 @@ export class SocketService {
       //delete entry from firebase at some point
     })
     this.socket.on('roomClosed', () =>{
-      this.router.navigate(["/home"])
+      this.route.navigate(["/home"])
       
 
     })
