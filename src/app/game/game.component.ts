@@ -22,7 +22,7 @@ export class GameComponent implements OnInit, OnDestroy{
   isHost: boolean
   currentPlayer;
   isArtist: boolean = false;
-  timer: number = 60;
+  timer: number = 59;
   subRef: Subscription;
   winner: Player;
 
