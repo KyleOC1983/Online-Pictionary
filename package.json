@@ -25,13 +25,14 @@
     "@ngrx/store": "^10.0.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "firebase": "^7.13.1",
+    "ngp-sort-pipe": "0.0.4",
     "paper": "^0.12.11",
     "rxjs": "~6.5.4",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-    "firebase": "^7.13.1"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.5",

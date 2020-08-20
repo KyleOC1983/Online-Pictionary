@@ -12,10 +12,9 @@
     width: 100%;
     height: 50px;
     margin: auto;
-    border: 2px solid #353535;
     background-color: #4b4b4b;
     padding: 0px 5px;
-    justify-content: space-evenly !important;
+    justify-content: space-around !important;
 }
 
 h2 {
@@ -38,3 +37,29 @@ h2 {
     flex-flow: column;
     align-items: center;
 }
+
+.btnDiv {
+    position: sticky;
+    bottom: 23px;
+}
+
+.leave-btn {
+    right: 140px;
+}
+
+.close-btn {
+    right: 265px;
+}
+
+.topic-btn {
+    right: 125px;
+}
+
+.absolute {
+    position: absolute;
+}
+
+
+
+
+
