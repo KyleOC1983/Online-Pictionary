@@ -24,9 +24,9 @@
     </div>
 
     <div class="container">
-        <app-chat class="fb-20"></app-chat>
-        <app-sketchpad class="fb-20"></app-sketchpad>
-        <app-scoreboard class="fb-20" [users]="gameInfo?.users" [artist]="gameInfo?.artist" [winner]="winner ? winner : null" ></app-scoreboard>
+        <app-chat class="fb-20 chat"></app-chat>
+        <app-sketchpad class="fb-20 sketch"></app-sketchpad>
+        <app-scoreboard class="fb-20 scoreboard" [users]="gameInfo?.users" [artist]="gameInfo?.artist" [winner]="winner ? winner : null" ></app-scoreboard>
     </div>
     <div class="container btnDiv">
         <button class="topic-btn" mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
