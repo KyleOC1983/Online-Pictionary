@@ -65,7 +65,7 @@ export class SocketService {
               this.gameEnd(allUsers)
             }
           }
-          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig }).then(v => this.clearBoard(true))
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
         }
       )
     })
@@ -73,7 +73,7 @@ export class SocketService {
       let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
-      });
+      }).then(v => this.clearBoard(true));
       //select new topic, update firestore with new topic
     })
     this.socket.on('leaveGame', (displayName, gameId) => {

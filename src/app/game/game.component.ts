@@ -33,10 +33,6 @@ export class GameComponent implements OnInit, OnDestroy{
     this.savedName = true
     this.gameService.joinGame(this.displayName, this.currentGame)
   }
-  // not sure that this actually needs to be a function
-  // assignArtist(){
-  //   this.gameService.updateArtist(this.currentGame)
-  // }
 
   leaveGame(){
     this.gameService.leaveGame(this.displayName, this.currentGame)
@@ -97,7 +93,9 @@ export class GameComponent implements OnInit, OnDestroy{
       this.savedName = true
     } 
     this.socket.winner$.subscribe(val => {
-      this.winner = val})
+      this.winner = val;
+      })
+      console.log(this.winner);  
   }
 
 

@@ -17,8 +17,8 @@
         <div class="stats-box container">
 
             <h2>ROUND : {{gameInfo?.gameConfig.currentRound}} / {{gameInfo?.gameConfig.maxRounds}}</h2>
-            <h2>ARTIST : {{gameInfo?.artist.displayName}} </h2>
-            <h2 *ngIf="isArtist">TOPIC : {{gameInfo?.currentTopic}}</h2>
+            <h2 *ngIf='!winner'>ARTIST : {{gameInfo?.artist.displayName}} </h2>
+            <h2 *ngIf="isArtist && !winner">TOPIC : {{gameInfo?.currentTopic}}</h2>
             <h2>TIME : {{timer}}</h2>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <app-scoreboard class="fb-20" [users]="gameInfo?.users" [artist]="gameInfo?.artist" [winner]="winner ? winner : null" ></app-scoreboard>
     </div>
     <div class="container">
-        <button mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
+        <button mat-raised-button color="warn" *ngIf="isArtist && !winner" (click)="newTopic()">New Topic</button>
         <button mat-raised-button routerLink="home" (click)="leaveGame()">LEAVE ROOM</button>
         <button mat-raised-button color="warn" *ngIf="isHost">CLOSE ROOM</button>
     </div>
