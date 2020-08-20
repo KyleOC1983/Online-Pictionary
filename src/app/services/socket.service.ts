@@ -65,7 +65,7 @@ export class SocketService {
               this.gameEnd(allUsers)
             }
           }
-          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig }).then(v => this.clearBoard(true))
+          game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
         }
       )
     })
@@ -73,7 +73,7 @@ export class SocketService {
       let randomTopic: string = topics[Math.floor(Math.random() * topics.length)];
       this.afs.collection('pictionary').doc(gameId).update({
         currentTopic: randomTopic
-      });
+      }).then(v => this.clearBoard(true));
       //select new topic, update firestore with new topic
     })
     this.socket.on('leaveGame', (displayName, gameId) => {
@@ -112,17 +112,17 @@ export class SocketService {
       //add user to firestore with init score 0;
     })
     this.socket.on('gameEnd', (gameId, allUsers) => {
-      console.log(`Game in room ${gameId} has ended`);
       allUsers.sort(function (a, b) {
         return b.score - a.score
       })
       let winner = allUsers.shift()
-      console.log(winner);
+      this.sendWinner(winner)
 
       //check for user with highest score on firestore
       //do some kind of win functionality
       //delete entry from firebase at some point
     })
+
 
   }
 
@@ -180,6 +180,16 @@ export class SocketService {
   sendChat(msg: Message) {
     this.socket.emit('newMessage', msg);
   }
+  public get winner$() {
+    return Observable.create((observer) => {
+      this.socket.on('winner', (winner) => {
+        observer.next(winner);
+      });
+    })
+  }
+  sendWinner(winner){
+    this.socket.emit('winner', winner);
+  }
 
   // State functionality
 
@@ -229,6 +239,8 @@ export class SocketService {
   }
   // Triggered on round win for now, add timer later and work with that too
   gameEnd(allUsers: Array<Object>) {
+    console.log('game end function');
+    
     this.socket.emit('gameEnd', allUsers)
   }
 
