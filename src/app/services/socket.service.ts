@@ -7,6 +7,9 @@ import * as firebase from 'firebase';
 import { Player } from '../interfaces/player.interface';
 import topics from '../shared/topics.arrays';
 import { DisplaynamestoreService } from './displaynamestore.service';
+import { Router } from '@angular/router';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +17,10 @@ import { DisplaynamestoreService } from './displaynamestore.service';
 export class SocketService {
 
   socket: any;
+  
 
 
-  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService) {
+  constructor(private afs: AngularFirestore, private playerStore: DisplaynamestoreService, private router: Router) {
 
     this.socket = io.connect();
     this.socket.on('win', (displayName, gameId) => {
@@ -70,6 +74,10 @@ export class SocketService {
           }
           else {
             game.update({ ...data, users: users, currentArtist: nextArtist, gameConfig: data.gameConfig })
+            let newMsg: Message = {
+            displayName: 'System', 
+            body: `New Artist is ${nextArtist.displayName}. New Drawing Imminent`};
+            this.sendChat(newMsg);
           }
         }
       )
@@ -123,6 +131,9 @@ export class SocketService {
       let winner = allUsers.shift()
       this.sendWinner(winner)
     })
+    this.socket.on('roomClosed', () =>{
+      this.router.navigate(["/home"])
+    })
   }
 
   public get startTimer$() {
@@ -170,8 +181,7 @@ export class SocketService {
   //  Chat observable and functionality
   public get chatMessage$() {
     return Observable.create((observer) => {
-      this.socket.on('newMessage', (message, displayName) => {
-        message.displayName = displayName;
+      this.socket.on('newMessage', (message) => {
         observer.next(message);
       });
     })
@@ -243,6 +253,10 @@ export class SocketService {
 
   startTimer(time) {
     this.socket.emit('startTimer', time);
+  }
+
+  roomClosed() {
+    this.socket.emit('roomClosed')
   }
   // Game end function(s)
   // When game ends force all users to leave a room and delete it from firestore as an active room

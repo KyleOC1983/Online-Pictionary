@@ -22,7 +22,7 @@ module.exports.listen = (server) => {
             socket.rooms = {};
         })
         socket.on('newMessage', (msg) => {
-            io.to(socket.gameRoom).emit('newMessage', msg, socket.displayName);
+            io.to(socket.gameRoom).emit('newMessage', msg);
         })
         socket.on('draw', (draw) => {
             
@@ -62,6 +62,10 @@ module.exports.listen = (server) => {
         socket.on('startTimer', (time)=>{
             io.to(socket.gameRoom).emit('startTimer', time);
         })
+        socket.on('roomClosed', ()=>{
+            io.to(socket.gameRoom).emit('roomClosed', null);
+        })
+
     })
     return io;
 }
