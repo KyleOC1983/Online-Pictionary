@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280) {
-      if (this.messageText.toLowerCase() == this.answer.toLowerCase()) {
+      if (this.messageText.toLowerCase().includes(this.answer.toLowerCase())) {
         this.socketService.win()
         this._snackBar.open('That is correct!', 'OK', {
           duration: 2000
