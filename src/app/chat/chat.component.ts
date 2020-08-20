@@ -34,7 +34,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280) {
-      if (this.messageText.toLowerCase().includes(this.answer.toLowerCase()) && !this.winner && this.answer != '') {
+      if (this.messageText.toLowerCase().replace(/\s/g, '').includes(this.answer.toLowerCase().replace(/\s/g, '')) && !this.winner && this.answer != '') {
         this.socketService.win()
         let msg: Message = {
           displayName: "System",
