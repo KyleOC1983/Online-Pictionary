@@ -19,12 +19,11 @@ export class ChatComponent implements OnInit {
   gameInfo: GameInfo
   messages: Array<Message> = [];
   messageText: string = '';
-  displayName: string = '';
   answer: string = '';
   currentGame: string;
   player: string;
   isArtist: boolean = false;
-  currentPlayer;
+  currentPlayer: string;
 
 
   constructor(private socketService: SocketService, private _snackBar: MatSnackBar,
@@ -39,7 +38,7 @@ export class ChatComponent implements OnInit {
         });
       }
       let msg: Message = {
-        displayName: this.displayName,
+        displayName: this.currentPlayer,
         body: this.messageText
       }
       this.socketService.sendChat(msg);

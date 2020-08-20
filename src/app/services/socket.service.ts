@@ -1,4 +1,4 @@
-import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Message } from '../interfaces/message.interface';
@@ -179,8 +179,7 @@ export class SocketService {
   //  Chat observable and functionality
   public get chatMessage$() {
     return Observable.create((observer) => {
-      this.socket.on('newMessage', (message, displayName) => {
-        message.displayName = displayName;
+      this.socket.on('newMessage', (message) => {
         observer.next(message);
       });
     })
