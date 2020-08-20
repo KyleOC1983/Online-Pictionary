@@ -30,7 +30,7 @@
     </div>
     <div class="container btnDiv">
         <button class="topic-btn" mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
-        <button class="absolute close-btn" mat-raised-button color="warn" *ngIf="isHost">CLOSE ROOM</button>
+        <button class="absolute close-btn" mat-raised-button color="warn" *ngIf="isHost" (click)="closeRoom()">CLOSE ROOM</button>
         <button class="absolute leave-btn" mat-raised-button routerLink="home" (click)="leaveGame()">LEAVE ROOM</button>
     </div>
 </ng-container>

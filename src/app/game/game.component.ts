@@ -39,6 +39,9 @@ export class GameComponent implements OnInit, OnDestroy{
   leaveGame(){
     this.gameService.leaveGame(this.displayName, this.currentGame)
   }
+  closeRoom(){
+    this.gameService.closeRoom(null)
+  }
   newTopic(){
     this.gameService.newTopic();
     if(this.timer == 60){
