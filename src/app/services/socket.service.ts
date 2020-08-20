@@ -200,7 +200,11 @@ export class SocketService {
     })
   }
   sendChat(msg: Message) {
-    this.socket.emit('newMessage', {msg: msg, color: this.userColor});
+    let color = this.userColor
+    if(msg.displayName === 'System'){
+      color = 'white'
+    }
+    this.socket.emit('newMessage', {msg: msg, color: color});
   }
   public get winner$() {
     return Observable.create((observer) => {
