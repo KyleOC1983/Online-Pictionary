@@ -44,7 +44,7 @@ export class ChatComponent implements OnInit {
         this.messageText = `${this.currentPlayer} has won the round! The answer was ${this.answer}`;
       }
       let msg: Message = {
-        displayName: "System",
+        displayName: this.currentPlayer,
         body: this.messageText
       }
       this.socketService.sendChat(msg);
