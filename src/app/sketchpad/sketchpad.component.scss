@@ -5,17 +5,23 @@ canvas{
     margin: 10px auto;
     background-color: #e6e6e6;
     border-radius: 10px;
+    cursor: crosshair;
+}
+
+.button-container{
+    width: 610px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
 }
 
 button{
-    float:left;
-    margin-left: 5px;
+    margin: 3px 10px;
 }
 
-.buttonDiv{
-    width: 610px;
+.btn-left{
+    flex-basis: 1 1 10px;
 }
-
-.canvas{
-     cursor: crosshair;
+.btn-right{
+    flex-basis: 0 0 140px;
 }

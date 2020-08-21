@@ -26,6 +26,9 @@ export class SketchpadComponent implements OnInit {
   @Output() newTopicEvent = new EventEmitter<null>()
   @Input() isArtist: boolean;
   @Input() winner: Player
+  @Input() isHost: boolean;
+  @Output() closeRoomEvent = new EventEmitter<null>();
+  @Output() leaveGameEvent = new EventEmitter<null>();
   constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
 
   startDraw(){
@@ -42,6 +45,14 @@ export class SketchpadComponent implements OnInit {
     this.socket.sendSketch({x: event.layerX, y: event.layerY});
     
     }
+  }
+
+  closeRoom(){
+    this.closeRoomEvent.emit();
+  }
+
+  leaveGame(){
+    this.leaveGameEvent.emit();
   }
 
   newTopic(){

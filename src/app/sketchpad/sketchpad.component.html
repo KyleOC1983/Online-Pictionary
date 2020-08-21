@@ -1,8 +1,14 @@
 <div>
     <canvas class="canvas" id="cv" (mousedown)="startDraw()" (mousemove)="draw($event)" (mouseup)="endDraw()"
         (mouseleave)="endDraw()"></canvas>
-    <div class="buttonDiv">
+    <div class="button-container">
+        <div class="btn-sub">
         <button *ngIf="myDraw && !winner" mat-raised-button color="primary" (click)="clearDrawing()">Clear Drawing</button>
         <button class="topic-btn" mat-raised-button color="primary" *ngIf="isArtist && !winner" (click)="newTopic()">New Topic</button>
+    </div>
+    <div class="btn-sub">
+    <button class="close-btn" mat-raised-button color="warn" *ngIf="isHost" (click)="closeRoom()">CLOSE ROOM</button>
+        <button class="leave-btn" mat-raised-button color="accent" *ngIf="!isHost" routerLink="home" (click)="leaveGame()">LEAVE ROOM</button>
+    </div>    
     </div>
 </div>
