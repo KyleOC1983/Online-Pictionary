@@ -1,4 +1,5 @@
 <div class="win-box">
+    <h2 *ngIf="winner == null"> ROUND: {{gameConfig.currentRound}} / {{gameConfig.maxRounds}} </h2>
     <h2 *ngIf="winner != null">{{winner.displayName}} won with {{winner.score}} points! </h2>
 </div>
 
