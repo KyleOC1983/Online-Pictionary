@@ -34,20 +34,16 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText.length > 0 && this.messageText.length <= 280) {
-      if (this.messageText.toLowerCase().replace(/\s/g, '').includes(this.answer.toLowerCase().replace(/\s/g, '')) && !this.winner && this.answer != '') {
-        this.socketService.win()
-        let msg: Message = {
-          displayName: this.currentPlayer,
-          body: this.messageText
-        }
-        this.socketService.sendChat(msg);
-        this.messageText = `${this.currentPlayer} has won the round! The answer was ${this.answer}`;
-      }
       let msg: Message = {
         displayName: this.currentPlayer,
         body: this.messageText
       }
       this.socketService.sendChat(msg);
+      if (this.messageText.toLowerCase().replace(/\s/g, '').includes(this.answer.toLowerCase().replace(/\s/g, '')) && !this.winner && this.answer != '') {
+        this.socketService.win()
+  
+        this.messageText = `${this.currentPlayer} has won the round! The answer was ${this.answer}`;
+      }
       this.messageText = '';
     }
   }
