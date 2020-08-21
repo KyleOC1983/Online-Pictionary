@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { Project, Path, Point } from 'paper'; 
 import * as paper from 'paper';
 import { SocketService } from '../services/socket.service';
@@ -13,7 +13,6 @@ import { GameService } from '../services/game.service';
   styleUrls: ['./sketchpad.component.scss']
 })
 export class SketchpadComponent implements OnInit {
-
   
   myPath: any;
   project1: any;
@@ -23,7 +22,7 @@ export class SketchpadComponent implements OnInit {
   currentGame;
   currentPlayer;
   topic: string;
-
+  newTopicEvent = new EventEmitter<null>()
 
   constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
 
@@ -43,6 +42,9 @@ export class SketchpadComponent implements OnInit {
     }
   }
 
+  newTopic(){
+    this.newTopicEvent.emit()
+  }
   endDraw(){
     this.canDraw = false;
     this.socket.canDraw({draw: false});
