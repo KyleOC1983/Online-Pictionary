@@ -97,6 +97,9 @@ export class SocketService {
       game.get().subscribe(
         val => {
           let data = val.data();
+          if(!data){
+            return
+          }
           let artist = data.currentArtist
           let users = [...data.users];
           let idx = (users.findIndex((user) => user.displayName === `${displayName}`));
