@@ -40,7 +40,7 @@ export class GameComponent implements OnInit, OnDestroy{
   closeRoom(){
     this.gameService.closeRoom(this.currentGame)
   }
-  newTopic(){
+  newTopic(e){
     this.gameService.newTopic();
     if(this.timer == 60){
       this.timer = 59;
@@ -76,11 +76,12 @@ export class GameComponent implements OnInit, OnDestroy{
     
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      if(this.currentPlayer == val.currentArtist.displayName){
+      if(val && this.currentPlayer == val.currentArtist.displayName){
         this.isArtist = true;
       } else{
         this.isArtist = false;
       }
+      if(val){
        this.gameInfo = {
         gameId: val.gameId,
         artist: val.currentArtist,
@@ -92,6 +93,7 @@ export class GameComponent implements OnInit, OnDestroy{
           currentRound: val.gameConfig.currentRound
         }
       }
+    }
     })
     this.hostStore.$hostStatus.subscribe(val =>
       {this.isHost = val});
@@ -100,8 +102,7 @@ export class GameComponent implements OnInit, OnDestroy{
     } 
     this.socket.winner$.subscribe(val => {
       this.winner = val;
-      })
-      console.log(this.winner);  
+      }) 
   }
 
 

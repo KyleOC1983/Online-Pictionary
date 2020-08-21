@@ -35,7 +35,6 @@ export class SocketService {
           let topic = data.currentTopic
           users[winner].score++;
           if (users[winner].score === data.gameConfig.maxScore) {
-            console.log(allUsers, 'end users');
             this.gameEnd(allUsers)
             game.update({ ...data, users: users})
           }
@@ -54,7 +53,6 @@ export class SocketService {
 
     this.socket.on('newRound', (gameId) => {
       //select new artist, update firestore, clear board for next artist
-      console.log('new round')
       let game = this.afs.collection('pictionary').doc(`${gameId}`)
       game.get().subscribe(
         val => {
@@ -109,7 +107,6 @@ export class SocketService {
             game.update({
               users: firebase.firestore.FieldValue.arrayRemove(users[idx])
             })
-            console.log(game);
           }
         })
     })

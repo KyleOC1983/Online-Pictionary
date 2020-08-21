@@ -10,6 +10,7 @@ export class ScoreboardComponent implements OnChanges {
   @Input() users: Array<Player> = [];
   @Input() artist: Player;
   @Input() winner: Player
+  @Input() gameConfig;
   allUsers: Array<Player> = []
   constructor() { }
 

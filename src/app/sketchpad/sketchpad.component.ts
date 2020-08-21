@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Project, Path, Point } from 'paper'; 
 import * as paper from 'paper';
 import { SocketService } from '../services/socket.service';
@@ -13,7 +13,6 @@ import { GameService } from '../services/game.service';
   styleUrls: ['./sketchpad.component.scss']
 })
 export class SketchpadComponent implements OnInit {
-
   
   myPath: any;
   project1: any;
@@ -23,8 +22,8 @@ export class SketchpadComponent implements OnInit {
   currentGame;
   currentPlayer;
   topic: string;
-
-
+  @Output() newTopicEvent = new EventEmitter<null>()
+  @Input() isArtist: boolean;
   constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
 
   startDraw(){
@@ -43,6 +42,9 @@ export class SketchpadComponent implements OnInit {
     }
   }
 
+  newTopic(){
+    this.newTopicEvent.emit(null)
+  }
   endDraw(){
     this.canDraw = false;
     this.socket.canDraw({draw: false});
@@ -82,8 +84,10 @@ export class SketchpadComponent implements OnInit {
     this.currentGame = this.actr.snapshot.params.gameId;
     this.displayNameStore.player$.subscribe(val=> this.currentPlayer = val)
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-      this.topic = val.currentTopic
-      if(this.currentPlayer == val.currentArtist.displayName && this.topic != ''){
+      if(val && val.currentTopic){
+        this.topic = val.currentTopic
+      }
+      if(val && this.currentPlayer == val.currentArtist.displayName && this.topic != ''){
         this.myDraw = true;
       } else{
         this.myDraw = false;
