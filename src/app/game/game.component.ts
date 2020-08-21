@@ -54,7 +54,7 @@ export class GameComponent implements OnInit, OnDestroy{
       if(val == true){
         
         this.subRef = sub.subscribe(v=>{
-          this.timer = 60-v;
+          this.timer = 59-v;
           
           if(this.timer == 0){
             
