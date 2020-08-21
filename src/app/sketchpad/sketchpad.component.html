@@ -3,6 +3,6 @@
         (mouseleave)="endDraw()"></canvas>
     <div class="buttonDiv">
         <button *ngIf="myDraw" mat-raised-button color="warn" (click)="clearDrawing()">Clear Drawing</button>
-        <button class="topic-btn" mat-raised-button color="warn" *ngIf="myDraw" (click)="newTopic()">New Topic</button>
+        <button class="topic-btn" mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
     </div>
 </div>

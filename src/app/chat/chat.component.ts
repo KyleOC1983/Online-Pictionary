@@ -78,10 +78,10 @@ export class ChatComponent implements OnInit {
 
     this.currentGame = this.actr.snapshot.params.gameId;
     this.gameService.gameInfo(this.currentGame).subscribe((val: any) => {
-
+      if(val && val.currentTopic)
       this.answer = val.currentTopic;
 
-      if (this.currentPlayer == val.currentArtist.displayName) {
+      if (val && this.currentPlayer == val.currentArtist.displayName) {
 
         this.isArtist = true;
       } else {
