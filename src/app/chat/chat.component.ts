@@ -53,7 +53,8 @@ export class ChatComponent implements OnInit {
 
   chatScroll(): void {
     try {
-      this.chatOutput.nativeElement.scrollTo(0, this.messages.length * 20);
+      this.chatOutput.nativeElement.scrollTop = this.chatOutput.nativeElement.scrollHeight
+      // scrollTo(0, this.messages.length * 20);
     } catch (err) { }
   }
 
