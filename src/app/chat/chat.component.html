@@ -1,6 +1,6 @@
 <div #output class='output-box'>
-  <div *ngFor = "let m of messages">
-    <span [style.color]="m.color" [style.background-color]="m.msg.displayName != 'System' ? '#4b4b4b' : 'black'" class="displayName"> {{m.msg.displayName}} </span><span [style.background-color]="m.msg.displayName != 'System' ? '#4b4b4b' : 'black'">- {{m.msg.body}}</span>
+  <div *ngFor = "let m of messages" [style.background-color]="m.msg.displayName != 'System' ? '#4b4b4b' : 'black'">
+    <span [style.color]="m.color"  class="displayName"> {{m.msg.displayName}} </span>- {{m.msg.body}}
   </div>
 </div>
 

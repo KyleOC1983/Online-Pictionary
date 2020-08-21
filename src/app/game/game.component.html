@@ -4,7 +4,10 @@
         <mat-form-field class="example-full-width">
 
             <mat-label></mat-label>
-            <input matInput [(ngModel)]="displayName" name="displayName" (keyup.enter)="savePlayer()">
+            <input matInput [(ngModel)]="displayName" name="displayName" (keyup.enter)="savePlayer()" [formControl]="displayNameControl">
+            <mat-error *ngIf="displayNameControl.hasError('system')">
+                Invalid Display Name
+              </mat-error>
         </mat-form-field>
     </form>
 

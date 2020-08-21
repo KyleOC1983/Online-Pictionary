@@ -7,6 +7,7 @@ import { HostStoreService } from '../services/host.store.service';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
 import { interval, Subscription } from 'rxjs';
 import { Player } from '../interfaces/player.interface';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -25,11 +26,19 @@ export class GameComponent implements OnInit, OnDestroy{
   timer: number = 60;
   subRef: Subscription;
   winner: Player;
+  displayNameControl= new FormControl('', [
+    Validators.required
+  ]);
 
   constructor(private socket: SocketService, private gameService: GameService, 
     private actr: ActivatedRoute, private hostStore: HostStoreService, private displayNameStore: DisplaynamestoreService) { }
 
   savePlayer(){
+    if(this.displayName === 'System'){
+      this.displayNameControl.setErrors({system: true})
+      return;
+    }
+    
     this.savedName = true
     this.gameService.joinGame(this.displayName, this.currentGame)
   }
