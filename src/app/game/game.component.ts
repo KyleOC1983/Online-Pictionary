@@ -102,8 +102,7 @@ export class GameComponent implements OnInit, OnDestroy{
     } 
     this.socket.winner$.subscribe(val => {
       this.winner = val;
-      })
-      console.log(this.winner);  
+      }) 
   }
 
 
