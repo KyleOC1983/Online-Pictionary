@@ -2,7 +2,7 @@
     <canvas class="canvas" id="cv" (mousedown)="startDraw()" (mousemove)="draw($event)" (mouseup)="endDraw()"
         (mouseleave)="endDraw()"></canvas>
     <div class="buttonDiv">
-        <button *ngIf="myDraw" mat-raised-button color="warn" (click)="clearDrawing()">Clear Drawing</button>
-        <button class="topic-btn" mat-raised-button color="warn" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
+        <button *ngIf="myDraw" mat-raised-button color="primary" (click)="clearDrawing()">Clear Drawing</button>
+        <button class="topic-btn" mat-raised-button color="primary" *ngIf="isArtist" (click)="newTopic()">New Topic</button>
     </div>
 </div>
