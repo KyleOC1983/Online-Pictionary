@@ -24,7 +24,7 @@
 
     <div class="container">
         <app-chat class="fb-20 chat"></app-chat>
-        <app-sketchpad class="fb-20 sketch" (newTopicEvent)="newTopic($event)" [isArtist]="isArtist"></app-sketchpad>
+        <app-sketchpad class="fb-20 sketch" (newTopicEvent)="newTopic($event)" [winner]="winner" [isArtist]="isArtist"></app-sketchpad>
         <app-scoreboard class="fb-20 scoreboard" [gameConfig]="gameInfo?.gameConfig" [users]="gameInfo?.users" [artist]="gameInfo?.artist" [winner]="winner ? winner : null" ></app-scoreboard>
     </div>
     <div class="container btnDiv">

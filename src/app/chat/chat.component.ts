@@ -83,8 +83,6 @@ export class ChatComponent implements OnInit {
       if(val){
         this.answer = val.currentTopic;
       }
-
-      console.log(this.answer)
       if (val && this.currentPlayer == val.currentArtist.displayName) {
 
         this.isArtist = true;

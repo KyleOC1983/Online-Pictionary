@@ -5,6 +5,7 @@ import { SocketService } from '../services/socket.service';
 import { ActivatedRoute } from '@angular/router';
 import { DisplaynamestoreService } from '../services/displaynamestore.service';
 import { GameService } from '../services/game.service';
+import { Player } from '../interfaces/player.interface';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class SketchpadComponent implements OnInit {
   topic: string;
   @Output() newTopicEvent = new EventEmitter<null>()
   @Input() isArtist: boolean;
+  @Input() winner: Player
   constructor(private socket: SocketService, private actr: ActivatedRoute, private displayNameStore: DisplaynamestoreService, private gameService: GameService) { }
 
   startDraw(){
